@@ -4,6 +4,8 @@ import Header from './components/Header/Header';
 import Home from './pages/Home';
 import RSVP from './pages/RSVP';
 import Admin from './pages/Admin';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -14,7 +16,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rsvp" element={<RSVP />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </Router>
