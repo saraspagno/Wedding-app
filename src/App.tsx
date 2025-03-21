@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header/Header';
 import Home from './pages/Home';
 import RSVP from './pages/RSVP';
 import Admin from './pages/Admin';
@@ -9,14 +10,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <nav className="main-nav">
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/rsvp">RSVP</Link></li>
-            <li><Link to="/admin">Admin</Link></li>
-          </ul>
-        </nav>
-
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rsvp" element={<RSVP />} />

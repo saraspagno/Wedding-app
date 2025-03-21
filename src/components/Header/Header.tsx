@@ -1,16 +1,17 @@
 import React from 'react';
-import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
+import styles from '../../styles/Header.module.css';
 
 const Header: React.FC = () => {
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        {/* Add your logo here */}
+      <Link to="/" className={styles.logo}>
         <h1>Wedding Logo</h1>
-      </div>
-      <div className={styles.message}>
-        <p>Logic Message</p>
-      </div>
+      </Link>
+      <nav className={styles.nav}>
+        <Link to="/rsvp" className={styles.rsvpButton}>RSVP</Link>
+        <Link to="/admin" className={styles.loginButton}>Login</Link>
+      </nav>
     </header>
   );
 };
