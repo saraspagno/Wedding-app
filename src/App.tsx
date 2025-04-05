@@ -6,12 +6,11 @@ import RSVP from './pages/RSVP';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import './App.css';
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="text-center">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
