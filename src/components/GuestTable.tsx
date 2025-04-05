@@ -7,7 +7,7 @@ interface Guest {
   lastName: string;
   numberOfPeople: number;
   phoneNumber: string;
-  rsvpLink?: string;
+  rsvpCode?: string;
   peopleComing?: number;
   peopleNeedingBus?: number;
   [key: string]: any; 
@@ -16,13 +16,13 @@ interface Guest {
 interface GuestTableProps {
   guests: Guest[];
   onAddGuest: () => void;
-  onGenerateRsvpLink: (guestId: string) => void;
+  onGenerateRsvpCode: (guestId: string) => void;
 }
 
 const GuestTable: React.FC<GuestTableProps> = ({
   guests,
   onAddGuest,
-  onGenerateRsvpLink
+  onGenerateRsvpCode
 }) => {
   const [selectedGuests, setSelectedGuests] = useState<Set<string>>(new Set());
 
@@ -36,9 +36,14 @@ const GuestTable: React.FC<GuestTableProps> = ({
     setSelectedGuests(newSelected);
   };
 
+  const selectAllSelectable = () => {
+    const selectableGuests = guests.filter(guest => !guest.rsvpCode).map(guest => guest.id);
+    setSelectedGuests(new Set(selectableGuests));
+  };
+
   const generateLinksForSelected = () => {
     selectedGuests.forEach(guestId => {
-      onGenerateRsvpLink(guestId);
+      onGenerateRsvpCode(guestId);
     });
     setSelectedGuests(new Set());
   };
@@ -52,6 +57,12 @@ const GuestTable: React.FC<GuestTableProps> = ({
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
           >
             Add Guest
+          </button>
+          <button
+            onClick={selectAllSelectable}
+            className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+          >
+            Select All Selectable
           </button>
           {selectedGuests.size > 0 && (
             <button
@@ -89,7 +100,8 @@ const GuestTable: React.FC<GuestTableProps> = ({
                     type="checkbox"
                     checked={selectedGuests.has(guest.id)}
                     onChange={() => toggleGuestSelection(guest.id)}
-                    className="rounded"
+                    disabled={!!guest.rsvpCode}
+                    className={`rounded ${guest.rsvpCode ? 'opacity-50 cursor-not-allowed' : ''}`}
                   />
                 </td>
                 <td className="p-2 border-b">{guest.name}</td>
@@ -97,21 +109,21 @@ const GuestTable: React.FC<GuestTableProps> = ({
                 <td className="p-2 border-b">{guest.numberOfPeople}</td>
                 <td className="p-2 border-b">{guest.phoneNumber}</td>
                 <td className="p-2 border-b bg-blue-50">
-                  {guest.rsvpLink ? (
+                  {guest.rsvpCode ? (
                     <a 
-                      href={guest.rsvpLink}
+                      href={"/rsvp?code=" + guest.rsvpCode}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      {guest.rsvpLink}
+                      {"/rsvp?code=" + guest.rsvpCode}
                     </a>
                   ) : (
                     <span className="text-gray-400">-</span>
                   )}
                 </td>
-                <td className="p-2 border-b bg-blue-50">{guest.peopleComing || '-'}</td>
-                <td className="p-2 border-b bg-blue-50">{guest.peopleNeedingBus || '-'}</td>
+                <td className="p-2 border-b bg-blue-50">{guest.peopleComing === undefined ? 'NA' : guest.peopleComing}</td>
+                <td className="p-2 border-b bg-blue-50">{guest.peopleNeedingBus === undefined ? 'NA' : guest.peopleNeedingBus}</td>
               </tr>
             ))}
           </tbody>

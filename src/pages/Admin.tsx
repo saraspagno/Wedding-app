@@ -12,7 +12,7 @@ interface Guest {
   lastName: string;
   numberOfPeople: number;
   phoneNumber: string;
-  rsvpLink?: string;
+  rsvpCode?: string;
   peopleComing?: number;
   peopleNeedingBus?: number;
   [key: string]: any; // Allow for dynamic properties
@@ -36,7 +36,17 @@ const Admin: React.FC = () => {
         ...doc.data()
       })) as Guest[];
       
-      setGuests(guestsData);
+      // Sort guests: those who haven't RSVP'd go to the bottom
+      const sortedGuests = [...guestsData].sort((a, b) => {
+        // If one has RSVP'd and the other hasn't, prioritize the one who has
+        if (a.peopleComing !== undefined && b.peopleComing === undefined) return -1;
+        if (a.peopleComing === undefined && b.peopleComing !== undefined) return 1;
+        
+        // If both have RSVP'd or both haven't, sort by name
+        return `${a.name} ${a.lastName}`.localeCompare(`${b.name} ${b.lastName}`);
+      });
+      
+      setGuests(sortedGuests);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -63,23 +73,28 @@ const Admin: React.FC = () => {
     }
   };
 
-  const handleGenerateRsvpLink = async (guestId: string) => {
+  const handleGenerateRsvpCode = async (guestId: string) => {
     try {
-      // Generate a unique RSVP link for the guest
-      const rsvpCode = Math.random().toString(36).substring(2, 10);
-      const rsvpLink = `/rsvp/${rsvpCode}`;
-      
+      // Check if guest already has an RSVP code
+      const guest = guests.find(g => g.id === guestId);
+      if (guest?.rsvpCode) {
+        alert('This guest already has an RSVP code');
+        return;
+      }
+
+      // Generate a unique RSVP code for the guest
+      const rsvpCode = Math.random().toString(36).substring(2, 10);      
       await updateDoc(doc(db, 'guests', guestId), {
-        rsvpLink
+        rsvpCode
       });
       
       setGuests(guests.map(guest => 
         guest.id === guestId 
-          ? { ...guest, rsvpLink }
+          ? { ...guest, rsvpCode }
           : guest
       ));
     } catch (error) {
-      console.error('Error generating RSVP link:', error);
+      console.error('Error generating RSVP code:', error);
     }
   };
 
@@ -95,8 +110,11 @@ const Admin: React.FC = () => {
   // Calculate statistics
   const totalInvited = guests.reduce((sum, guest) => sum + guest.numberOfPeople, 0);
   const totalComing = guests.reduce((sum, guest) => sum + (guest.peopleComing || 0), 0);
-  const totalRsvps = guests.filter(guest => guest.peopleComing !== undefined).length;
+  const totalRsvps = guests
+    .filter(guest => guest.peopleComing !== undefined)
+    .reduce((sum, guest) => sum + guest.numberOfPeople, 0);
   const totalNotComing = totalRsvps - totalComing;
+  const totalNeedingBus = guests.reduce((sum, guest) => sum + (guest.peopleNeedingBus || 0), 0);
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -113,7 +131,7 @@ const Admin: React.FC = () => {
       <div className="flex flex-col gap-8">
         <section className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-gray-800 m-0 mb-4">Guest Statistics</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="bg-gray-50 p-4 rounded text-center">
               <h3 className="text-gray-600 text-sm mb-2">Total People Invited</h3>
               <p className="text-2xl font-bold text-gray-800 m-0">{totalInvited}</p>
@@ -130,6 +148,10 @@ const Admin: React.FC = () => {
               <h3 className="text-gray-600 text-sm mb-2">Total Not Coming</h3>
               <p className="text-2xl font-bold text-gray-800 m-0">{totalNotComing}</p>
             </div>
+            <div className="bg-gray-50 p-4 rounded text-center">
+              <h3 className="text-gray-600 text-sm mb-2">Total Needing Bus</h3>
+              <p className="text-2xl font-bold text-gray-800 m-0">{totalNeedingBus}</p>
+            </div>
           </div>
         </section>
 
@@ -140,7 +162,7 @@ const Admin: React.FC = () => {
             <GuestTable
               guests={guests}
               onAddGuest={() => setIsAddGuestFormOpen(true)}
-              onGenerateRsvpLink={handleGenerateRsvpLink}
+              onGenerateRsvpCode={handleGenerateRsvpCode}
             />
           )}
         </section>
