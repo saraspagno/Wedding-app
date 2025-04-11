@@ -1,6 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="min-h-screen bg-white">
       <main className="max-w-7xl mx-auto p-8">
@@ -13,19 +16,19 @@ const Home: React.FC = () => {
               Sara & Gavriel
             </h2>
             <p className="font-body text-2xl md:text-3xl text-gray-800 mb-4">
-              May 15, 2025
+            {t('date')}
             </p>
           </div>
         </section>
         
         <section className="mt-16 text-center">
           <h3 className="font-heading text-primary mb-8 text-3xl">
-            Wedding Details
+            {t('wedding_details')}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
             <div className="p-8 bg-gray-50 rounded-lg">
               <h4 className="font-heading text-primary mb-4 text-xl">
-                Ceremony
+                {t('ceremony')}
               </h4>
               <p className="font-body text-gray-800 my-2">4:00 PM</p>
               <p className="font-body text-gray-800 my-2">St. Mary's Church</p>
@@ -33,7 +36,7 @@ const Home: React.FC = () => {
             </div>
             <div className="p-8 bg-gray-50 rounded-lg">
               <h4 className="font-heading text-primary mb-4 text-xl">
-                Reception
+                {t('reception')}
               </h4>
               <p className="font-body text-gray-800 my-2">6:00 PM</p>
               <p className="font-body text-gray-800 my-2">Grand Hotel</p>

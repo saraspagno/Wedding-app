@@ -1,25 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 const Header: React.FC = () => {
   return (
-    <header className="flex flex-col md:flex-row justify-between items-center p-4 bg-white shadow-md">
-      <Link to="/" className="text-primary no-underline">
-        <h1 className="m-0 text-2xl font-heading">Wedding Logo</h1>
-      </Link>
-      <nav className="flex gap-4 items-center w-full md:w-auto justify-center">
-        <Link 
-          to="/rsvp" 
-          className="no-underline px-4 py-2 rounded bg-secondary text-white font-body transition-all duration-300 hover:bg-red-600"
-        >
-          RSVP
-        </Link>
-        <Link 
-          to="/admin" 
-          className="no-underline px-4 py-2 rounded border border-primary text-primary font-body transition-all duration-300 hover:bg-primary hover:text-white"
-        >
-          Login
-        </Link>
+    <header className="bg-white shadow-sm">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link to="/" className="text-xl font-bold text-gray-800">
+              Sara & Gavriel
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/rsvp" 
+              className="no-underline px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            >
+              RSVP
+            </Link>
+            <Link 
+              to="/admin" 
+              className="no-underline px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              Login
+            </Link>
+            <LanguageSwitcher />
+          </div>
+        </div>
       </nav>
     </header>
   );
