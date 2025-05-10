@@ -5,7 +5,7 @@ import RSVP from './pages/RSVP';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import './i18n';
+import './types/i18n';
 
 function App() {
   return (
