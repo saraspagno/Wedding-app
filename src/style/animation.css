@@ -1,0 +1,139 @@
+.animation-container {
+  margin: 0;
+  background: rgb(97, 51, 51);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animation-wrapper {
+  transform: scale(0.8) translateY(90px);
+  transform-origin: top center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (max-width: 1024px) {
+  .animation-wrapper {
+    transform: scale(0.3) translateY(40px);
+  }
+}
+
+@media (max-width: 768px) {
+  .animation-wrapper {
+    transform: scale(0.25) translateY(20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .animation-wrapper {
+    transform: scale(0.2) translateY(0px);
+  }
+}
+
+.scene {
+  perspective: 1200px;
+}
+
+.envelope {
+  width: 600px;
+  height: 400px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 3s ease-in-out;
+  box-shadow:
+    0px 40px 80px rgba(0, 0, 0, 0.5),
+    0px 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.envelope-back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+  z-index: 1;
+}
+
+.front-envelope {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  z-index: 2;
+}
+
+.lid {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 1.2s ease-in-out;
+  z-index: 4;
+}
+
+.lid-shadow {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+
+  transition: transform 1.2s ease-in-out;
+}
+
+.flap-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  opacity: 0.2;
+}
+
+.envelope-background {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.invitation {
+  position: absolute;
+  width: 67%;
+  height: auto;
+
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transform: rotateZ(-90deg) scale(1);
+  translate: -50% -50%;
+
+  opacity: 0;
+  z-index: 3;
+
+  transition:
+    top 1.4s ease-in-out,
+    left 1.5s ease-in-out,
+    transform 1.4s ease-in-out,
+    opacity 0.5s ease-in-out;
+}
+
+.envelope-front {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 4;
+}
