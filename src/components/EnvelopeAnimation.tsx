@@ -27,7 +27,6 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     const lidShadow = lidShadowRef.current;
     const invitation = invitationRef.current;
 
-    // Draw guest name on canvas and apply it to the back of the envelope
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -49,7 +48,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
         }, 1000);
     
         setTimeout(() => {
-          lid!.style.transform = 'rotateX(-180deg)';
+          lid!.style.transform = 'rotateX(-160deg)';
           lidShadow!.style.opacity = '1';
           lidShadow!.style.transform = 'rotateX(-180deg)';
           invitation!.style.opacity = '1';
@@ -73,7 +72,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
         setTimeout(() => {
           invitation!.style.zIndex = '5';
           invitation!.style.transform = 'rotateZ(0deg) scale(1.3)';
-          invitation!.style.top = '52%';
+          invitation!.style.top = '25%';
           invitation!.style.left = '50%';
         }, 7300);
     
@@ -83,6 +82,30 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
       };
     }
   }, [guestName]);
+
+  useEffect(() => {
+    const envelope = envelopeRef.current;
+    const container = document.querySelector('.animation-container') as HTMLElement;
+  
+    if (!envelope || !container) return;
+  
+    const resizeObserver = new ResizeObserver(() => {
+      const rect = envelope.getBoundingClientRect();
+      const envelopeHeight = rect.height;
+      const containerHeight = envelopeHeight * 2.2;
+  
+      container.style.height = `${containerHeight}px`;
+      envelope.style.bottom = `${envelopeHeight * -0.3}px`;
+    });
+  
+    resizeObserver.observe(envelope);
+  
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+  
+  
 
   return (
     <div className="animation-container bg-[rgb(97,51,51)] flex items-center justify-center h-screen">

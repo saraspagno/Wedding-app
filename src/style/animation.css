@@ -1,46 +1,37 @@
 .animation-container {
-  margin: 0;
   background: rgb(97, 51, 51);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
 }
+
 
 .animation-wrapper {
-  transform: scale(0.8) translateY(90px);
-  transform-origin: top center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(50vw, 1200px);
+  aspect-ratio: 3 / 2;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease-in-out;
 }
 
-@media (max-width: 1024px) {
-  .animation-wrapper {
-    transform: scale(0.3) translateY(40px);
-  }
-}
-
-@media (max-width: 768px) {
-  .animation-wrapper {
-    transform: scale(0.25) translateY(20px);
-  }
-}
-
-@media (max-width: 480px) {
-  .animation-wrapper {
-    transform: scale(0.2) translateY(0px);
-  }
-}
 
 .scene {
   perspective: 1200px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .envelope {
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
+  max-width: 600px;
+  max-height: 400px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 3s ease-in-out;
