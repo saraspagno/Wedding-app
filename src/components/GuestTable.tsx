@@ -2,50 +2,52 @@ import React, { useState } from 'react';
 import 'rsuite/dist/rsuite.min.css';
 
 interface Guest {
+  fullName: string;
+  coming?: boolean;
+  needsBus?: boolean;
+}
+
+interface GuestGroup {
   id: string;
-  name: string;
-  lastName: string;
-  numberOfPeople: number;
-  phoneNumber: string;
+  groupInvite: string;
+  contact: string;
   rsvpCode?: string;
-  peopleComing?: number;
-  peopleNeedingBus?: number;
-  [key: string]: any; 
+  guests: Guest[];
 }
 
 interface GuestTableProps {
-  guests: Guest[];
-  onAddGuest: () => void;
-  onGenerateRsvpCode: (guestId: string) => void;
+  guestGroups: GuestGroup[];
+  onAddGuestGroup: () => void;
+  onGenerateRsvpCode: (groupId: string) => void;
 }
 
 const GuestTable: React.FC<GuestTableProps> = ({
-  guests,
-  onAddGuest,
+  guestGroups,
+  onAddGuestGroup,
   onGenerateRsvpCode
 }) => {
-  const [selectedGuests, setSelectedGuests] = useState<Set<string>>(new Set());
+  const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
 
-  const toggleGuestSelection = (guestId: string) => {
-    const newSelected = new Set(selectedGuests);
-    if (newSelected.has(guestId)) {
-      newSelected.delete(guestId);
+  const toggleGroupSelection = (groupId: string) => {
+    const newSelected = new Set(selectedGroups);
+    if (newSelected.has(groupId)) {
+      newSelected.delete(groupId);
     } else {
-      newSelected.add(guestId);
+      newSelected.add(groupId);
     }
-    setSelectedGuests(newSelected);
+    setSelectedGroups(newSelected);
   };
 
   const selectAllSelectable = () => {
-    const selectableGuests = guests.filter(guest => !guest.rsvpCode).map(guest => guest.id);
-    setSelectedGuests(new Set(selectableGuests));
+    const selectableGroups = guestGroups.filter(group => !group.rsvpCode).map(group => group.id);
+    setSelectedGroups(new Set(selectableGroups));
   };
 
   const generateLinksForSelected = () => {
-    selectedGuests.forEach(guestId => {
-      onGenerateRsvpCode(guestId);
+    selectedGroups.forEach(groupId => {
+      onGenerateRsvpCode(groupId);
     });
-    setSelectedGuests(new Set());
+    setSelectedGroups(new Set());
   };
 
   return (
@@ -53,10 +55,10 @@ const GuestTable: React.FC<GuestTableProps> = ({
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-2">
           <button
-            onClick={onAddGuest}
+            onClick={onAddGuestGroup}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
           >
-            Add Guest
+            Add Guest Group
           </button>
           <button
             onClick={selectAllSelectable}
@@ -64,12 +66,12 @@ const GuestTable: React.FC<GuestTableProps> = ({
           >
             Select All Selectable
           </button>
-          {selectedGuests.size > 0 && (
+          {selectedGroups.size > 0 && (
             <button
               onClick={generateLinksForSelected}
               className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
             >
-              Generate Links for Selected ({selectedGuests.size})
+              Generate Links for Selected ({selectedGroups.size})
             </button>
           )}
         </div>
@@ -80,50 +82,72 @@ const GuestTable: React.FC<GuestTableProps> = ({
           <thead>
             <tr className="bg-gray-50">
               <th className="w-8 p-2 border-b"></th>
-              <th className="p-2 text-left border-b">Name</th>
-              <th className="p-2 text-left border-b">Last Name</th>
-              <th className="p-2 text-left border-b">Number of People</th>
-              <th className="p-2 text-left border-b">Phone Number</th>
+              <th className="p-2 text-left border-b">Group Name</th>
+              <th className="p-2 text-left border-b">Contact</th>
+              <th className="p-2 text-left border-b">Guests</th>
               <th className="p-2 text-left border-b bg-blue-50">RSVP Link</th>
-              <th className="p-2 text-left border-b bg-blue-50">People Coming</th>
-              <th className="p-2 text-left border-b bg-blue-50">People Needing Bus</th>
+              <th className="p-2 text-left border-b bg-blue-50">Status</th>
+              <th className="p-2 text-left border-b bg-blue-50">Bus Requests</th>
             </tr>
           </thead>
           <tbody>
-            {guests.map((guest) => (
+            {guestGroups.map((group) => (
               <tr 
-                key={guest.id}
-                className={`hover:bg-gray-50 ${selectedGuests.has(guest.id) ? 'bg-blue-50' : ''}`}
+                key={group.id}
+                className={`hover:bg-gray-50 ${selectedGroups.has(group.id) ? 'bg-blue-50' : ''}`}
               >
                 <td className="p-2 border-b">
                   <input
                     type="checkbox"
-                    checked={selectedGuests.has(guest.id)}
-                    onChange={() => toggleGuestSelection(guest.id)}
-                    disabled={!!guest.rsvpCode}
-                    className={`rounded ${guest.rsvpCode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    checked={selectedGroups.has(group.id)}
+                    onChange={() => toggleGroupSelection(group.id)}
+                    disabled={!!group.rsvpCode}
+                    className={`rounded ${group.rsvpCode ? 'opacity-50 cursor-not-allowed' : ''}`}
                   />
                 </td>
-                <td className="p-2 border-b">{guest.name}</td>
-                <td className="p-2 border-b">{guest.lastName}</td>
-                <td className="p-2 border-b">{guest.numberOfPeople}</td>
-                <td className="p-2 border-b">{guest.phoneNumber}</td>
-                <td className="p-2 border-b bg-blue-50">
-                  {guest.rsvpCode ? (
+                <td className="p-2 text-left border-b">{group.groupInvite}</td>
+                <td className="p-2 text-left border-b">{group.contact}</td>
+                <td className="p-2 text-left border-b">
+                  <ul className="list-disc list-inside">
+                    {group.guests.map((guest, index) => (
+                      <li key={index} className="text-sm">
+                        {guest.fullName}
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+                <td className="p-2 border-b text-left bg-blue-50">
+                  {group.rsvpCode ? (
                     <a 
-                      href={"/rsvp?code=" + guest.rsvpCode}
+                      href={"/?code=" + group.rsvpCode}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-800"
                     >
-                      {"/rsvp?code=" + guest.rsvpCode}
+                      {"/?code=" + group.rsvpCode}
                     </a>
                   ) : (
                     <span className="text-gray-400">-</span>
                   )}
                 </td>
-                <td className="p-2 border-b bg-blue-50">{guest.peopleComing === undefined ? 'NA' : guest.peopleComing}</td>
-                <td className="p-2 border-b bg-blue-50">{guest.peopleNeedingBus === undefined ? 'NA' : guest.peopleNeedingBus}</td>
+                <td className="p-2 border-b text-left bg-blue-50">
+                  {group.guests.some(g => g.coming !== undefined) ? (
+                    <div>
+                      Coming: {group.guests.filter(g => g.coming).length} / {group.guests.length}
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">NA</span>
+                  )}
+                </td>
+                <td className="p-2 border-b text-left bg-blue-50">
+                  {group.guests.some(g => g.needsBus !== undefined) ? (
+                    <div>
+                      {group.guests.filter(g => g.needsBus).length} / {group.guests.filter(g => g.coming).length}
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">NA</span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

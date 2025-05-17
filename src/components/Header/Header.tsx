@@ -14,12 +14,6 @@ const Header: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <Link 
-              to="/rsvp" 
-              className="no-underline px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition-colors"
-            >
-              RSVP
-            </Link>
-            <Link 
               to="/admin" 
               className="no-underline px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
             >

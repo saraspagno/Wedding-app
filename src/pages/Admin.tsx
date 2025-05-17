@@ -7,46 +7,46 @@ import GuestTable from '../components/GuestTable';
 import AddGuestForm from '../components/AddGuestForm';
 
 interface Guest {
+  fullName: string;
+  coming?: boolean;
+  needsBus?: boolean;
+}
+
+interface GuestGroup {
   id: string;
-  name: string;
-  lastName: string;
-  numberOfPeople: number;
-  phoneNumber: string;
+  groupInvite: string;
+  contact: string;
   rsvpCode?: string;
-  peopleComing?: number;
-  peopleNeedingBus?: number;
-  [key: string]: any; // Allow for dynamic properties
+  guests: Guest[];
 }
 
 const Admin: React.FC = () => {
   const navigate = useNavigate();
-  const [guests, setGuests] = useState<Guest[]>([]);
+  const [guestGroups, setGuestGroups] = useState<GuestGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddGuestFormOpen, setIsAddGuestFormOpen] = useState(false);
 
-  const fetchGuests = async () => {
+  const fetchGuestGroups = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'guests'));
-      const guestsData = querySnapshot.docs.map(doc => ({
+      const querySnapshot = await getDocs(collection(db, 'guestGroups'));
+      const groupsData = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        name: '',
-        lastName: '',
-        numberOfPeople: 0,
-        phoneNumber: '',
         ...doc.data()
-      })) as Guest[];
+      })) as GuestGroup[];
       
-      // Sort guests: those who haven't RSVP'd go to the bottom
-      const sortedGuests = [...guestsData].sort((a, b) => {
+      // Sort groups: those who haven't RSVP'd go to the bottom
+      const sortedGroups = [...groupsData].sort((a, b) => {
         // If one has RSVP'd and the other hasn't, prioritize the one who has
-        if (a.peopleComing !== undefined && b.peopleComing === undefined) return -1;
-        if (a.peopleComing === undefined && b.peopleComing !== undefined) return 1;
+        const aHasResponded = a.guests.some(g => g.coming !== undefined);
+        const bHasResponded = b.guests.some(g => g.coming !== undefined);
+        if (aHasResponded && !bHasResponded) return -1;
+        if (!aHasResponded && bHasResponded) return 1;
         
-        // If both have RSVP'd or both haven't, sort by name
-        return `${a.name} ${a.lastName}`.localeCompare(`${b.name} ${b.lastName}`);
+        // If both have RSVP'd or both haven't, sort by group name
+        return a.groupInvite.localeCompare(b.groupInvite);
       });
       
-      setGuests(sortedGuests);
+      setGuestGroups(sortedGroups);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -55,43 +55,42 @@ const Admin: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchGuests();
+    fetchGuestGroups();
   }, []);
 
-  const handleAddGuest = async (guestData: {
-    name: string;
-    lastName: string;
-    numberOfPeople: number;
-    phoneNumber: string;
+  const handleAddGuestGroup = async (groupData: {
+    groupInvite: string;
+    contact: string;
+    guests: Guest[];
   }) => {
     try {
-      const docRef = await addDoc(collection(db, 'guests'), guestData);
-      const newGuest = { ...guestData, id: docRef.id };
-      setGuests([...guests, newGuest]);
+      const docRef = await addDoc(collection(db, 'guestGroups'), groupData);
+      const newGroup = { ...groupData, id: docRef.id };
+      setGuestGroups([...guestGroups, newGroup]);
     } catch (error) {
-      console.error('Error adding guest:', error);
+      console.error('Error adding guest group:', error);
     }
   };
 
-  const handleGenerateRsvpCode = async (guestId: string) => {
+  const handleGenerateRsvpCode = async (groupId: string) => {
     try {
-      // Check if guest already has an RSVP code
-      const guest = guests.find(g => g.id === guestId);
-      if (guest?.rsvpCode) {
-        alert('This guest already has an RSVP code');
+      // Check if group already has an RSVP code
+      const group = guestGroups.find(g => g.id === groupId);
+      if (group?.rsvpCode) {
+        alert('This group already has an RSVP code');
         return;
       }
 
-      // Generate a unique RSVP code for the guest
+      // Generate a unique RSVP code for the group
       const rsvpCode = Math.random().toString(36).substring(2, 10);      
-      await updateDoc(doc(db, 'guests', guestId), {
+      await updateDoc(doc(db, 'guestGroups', groupId), {
         rsvpCode
       });
       
-      setGuests(guests.map(guest => 
-        guest.id === guestId 
-          ? { ...guest, rsvpCode }
-          : guest
+      setGuestGroups(guestGroups.map(group => 
+        group.id === groupId 
+          ? { ...group, rsvpCode }
+          : group
       ));
     } catch (error) {
       console.error('Error generating RSVP code:', error);
@@ -108,13 +107,17 @@ const Admin: React.FC = () => {
   };
 
   // Calculate statistics
-  const totalInvited = guests.reduce((sum, guest) => sum + guest.numberOfPeople, 0);
-  const totalComing = guests.reduce((sum, guest) => sum + (guest.peopleComing || 0), 0);
-  const totalRsvps = guests
-    .filter(guest => guest.peopleComing !== undefined)
-    .reduce((sum, guest) => sum + guest.numberOfPeople, 0);
-  const totalNotComing = totalRsvps - totalComing;
-  const totalNeedingBus = guests.reduce((sum, guest) => sum + (guest.peopleNeedingBus || 0), 0);
+  const totalInvited = guestGroups.reduce((sum, group) => sum + group.guests.length, 0);
+  const totalComing = guestGroups.reduce((sum, group) => 
+    sum + group.guests.filter(guest => guest.coming).length, 0
+  );
+  const totalResponded = guestGroups.reduce((sum, group) => 
+    sum + group.guests.filter(guest => guest.coming !== undefined).length, 0
+  );
+  const totalNotComing = totalResponded - totalComing;
+  const totalNeedingBus = guestGroups.reduce((sum, group) => 
+    sum + group.guests.filter(guest => guest.needsBus).length, 0
+  );
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -141,8 +144,8 @@ const Admin: React.FC = () => {
               <p className="text-2xl font-bold text-gray-800 m-0">{totalComing}</p>
             </div>
             <div className="bg-gray-50 p-4 rounded text-center">
-              <h3 className="text-gray-600 text-sm mb-2">Total RSVPs</h3>
-              <p className="text-2xl font-bold text-gray-800 m-0">{totalRsvps}</p>
+              <h3 className="text-gray-600 text-sm mb-2">Total Responses</h3>
+              <p className="text-2xl font-bold text-gray-800 m-0">{totalResponded}</p>
             </div>
             <div className="bg-gray-50 p-4 rounded text-center">
               <h3 className="text-gray-600 text-sm mb-2">Total Not Coming</h3>
@@ -157,11 +160,11 @@ const Admin: React.FC = () => {
 
         <section className="bg-white p-6 rounded-lg shadow-md">
           {loading ? (
-            <p>Loading guests...</p>
+            <p>Loading guest groups...</p>
           ) : (
             <GuestTable
-              guests={guests}
-              onAddGuest={() => setIsAddGuestFormOpen(true)}
+              guestGroups={guestGroups}
+              onAddGuestGroup={() => setIsAddGuestFormOpen(true)}
               onGenerateRsvpCode={handleGenerateRsvpCode}
             />
           )}
@@ -171,7 +174,7 @@ const Admin: React.FC = () => {
       <AddGuestForm
         isOpen={isAddGuestFormOpen}
         onClose={() => setIsAddGuestFormOpen(false)}
-        onSubmit={handleAddGuest}
+        onSubmit={handleAddGuestGroup}
       />
     </div>
   );

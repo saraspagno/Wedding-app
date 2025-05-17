@@ -1,51 +1,75 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { db } from '../types/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import EnvelopeAnimation from '../components/EnvelopeAnimation';
+import RSVPForm from '../components/RSVPForm';
+import '../style/animation.css';
+
+interface Guest {
+  fullName: string;
+  coming?: boolean;
+  needsBus?: boolean;
+}
+
+interface GuestGroup {
+  id: string;
+  groupInvite: string;
+  contact: string;
+  rsvpCode?: string;
+  guests: Guest[];
+}
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
-  
+  const [searchParams] = useSearchParams();
+  const [guestGroup, setGuestGroup] = useState<GuestGroup | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchGuestGroup = async () => {
+      const rsvpCode = searchParams.get('code');
+      if (!rsvpCode) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const q = query(collection(db, 'guestGroups'), where('rsvpCode', '==', rsvpCode));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          setError('Invalid RSVP code');
+          setLoading(false);
+          return;
+        }
+
+        const docSnap = querySnapshot.docs[0];
+        const groupData = { id: docSnap.id, ...docSnap.data() } as GuestGroup;
+        setGuestGroup(groupData);
+      } catch (err) {
+        setError('Error fetching guest group information');
+        console.error('Error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGuestGroup();
+  }, [searchParams]);
+
+  const handleRSVPComplete = (updatedGroup: GuestGroup) => {
+    setGuestGroup(updatedGroup);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+
   return (
-    <div className="min-h-screen bg-white">
-      <main className="max-w-7xl mx-auto p-8">
-        <section className="flex flex-col items-center gap-8 my-8 lg:my-16">
-          <div className="w-full max-w-2xl h-[400px] bg-gray-100 rounded-lg">
-            {/* Add your hero image here */}
-          </div>
-          <div className="text-center">
-            <h2 className="font-heading text-5xl md:text-6xl text-primary mb-4">
-              Sara & Gavriel
-            </h2>
-            <p className="font-body text-2xl md:text-3xl text-gray-800 mb-4">
-            {t('date')}
-            </p>
-          </div>
-        </section>
-        
-        <section className="mt-16 text-center">
-          <h3 className="font-heading text-primary mb-8 text-3xl">
-            {t('wedding_details')}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <div className="p-8 bg-gray-50 rounded-lg">
-              <h4 className="font-heading text-primary mb-4 text-xl">
-                {t('ceremony')}
-              </h4>
-              <p className="font-body text-gray-800 my-2">4:00 PM</p>
-              <p className="font-body text-gray-800 my-2">St. Mary's Church</p>
-              <p className="font-body text-gray-800 my-2">123 Wedding Street</p>
-            </div>
-            <div className="p-8 bg-gray-50 rounded-lg">
-              <h4 className="font-heading text-primary mb-4 text-xl">
-                {t('reception')}
-              </h4>
-              <p className="font-body text-gray-800 my-2">6:00 PM</p>
-              <p className="font-body text-gray-800 my-2">Grand Hotel</p>
-              <p className="font-body text-gray-800 my-2">456 Celebration Ave</p>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+    <>
+      <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
+      {guestGroup && <RSVPForm guestGroup={guestGroup} onRSVPComplete={handleRSVPComplete} />}
+    </>
   );
 };
 
