@@ -1,19 +1,6 @@
 import React, { useState } from 'react';
 import 'rsuite/dist/rsuite.min.css';
-
-interface Guest {
-  fullName: string;
-  coming?: boolean;
-  needsBus?: boolean;
-}
-
-interface GuestGroup {
-  id: string;
-  groupInvite: string;
-  contact: string;
-  rsvpCode?: string;
-  guests: Guest[];
-}
+import { GuestGroup } from '../types/interfaces';
 
 interface GuestTableProps {
   guestGroups: GuestGroup[];
@@ -27,6 +14,13 @@ const GuestTable: React.FC<GuestTableProps> = ({
   onGenerateRsvpCode
 }) => {
   const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
+
+  const getBusCounts = (group: GuestGroup) => {
+    const bus1630 = group.guests.filter(g => g.busTime === '16:30').length;
+    const bus1700 = group.guests.filter(g => g.busTime === '17:00').length;
+    const total = bus1630 + bus1700;
+    return { bus1630, bus1700, total };
+  };
 
   const toggleGroupSelection = (groupId: string) => {
     const newSelected = new Set(selectedGroups);
@@ -91,65 +85,76 @@ const GuestTable: React.FC<GuestTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {guestGroups.map((group) => (
-              <tr 
-                key={group.id}
-                className={`hover:bg-gray-50 ${selectedGroups.has(group.id) ? 'bg-blue-50' : ''}`}
-              >
-                <td className="p-2 border-b">
-                  <input
-                    type="checkbox"
-                    checked={selectedGroups.has(group.id)}
-                    onChange={() => toggleGroupSelection(group.id)}
-                    disabled={!!group.rsvpCode}
-                    className={`rounded ${group.rsvpCode ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  />
-                </td>
-                <td className="p-2 text-left border-b">{group.groupInvite}</td>
-                <td className="p-2 text-left border-b">{group.contact}</td>
-                <td className="p-2 text-left border-b">
-                  <ul className="list-disc list-inside">
-                    {group.guests.map((guest, index) => (
-                      <li key={index} className="text-sm">
-                        {guest.fullName}
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="p-2 border-b text-left bg-blue-50">
-                  {group.rsvpCode ? (
-                    <a 
-                      href={"/?code=" + group.rsvpCode}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      {"/?code=" + group.rsvpCode}
-                    </a>
-                  ) : (
-                    <span className="text-gray-400">-</span>
-                  )}
-                </td>
-                <td className="p-2 border-b text-left bg-blue-50">
-                  {group.guests.some(g => g.coming !== undefined) ? (
-                    <div>
-                      Coming: {group.guests.filter(g => g.coming).length} / {group.guests.length}
-                    </div>
-                  ) : (
-                    <span className="text-gray-400">NA</span>
-                  )}
-                </td>
-                <td className="p-2 border-b text-left bg-blue-50">
-                  {group.guests.some(g => g.needsBus !== undefined) ? (
-                    <div>
-                      {group.guests.filter(g => g.needsBus).length} / {group.guests.filter(g => g.coming).length}
-                    </div>
-                  ) : (
-                    <span className="text-gray-400">NA</span>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {guestGroups.map((group) => {
+              const { bus1630, bus1700, total } = getBusCounts(group);
+              const totalComing = group.guests.filter(g => g.coming).length;
+              
+              return (
+                <tr 
+                  key={group.id}
+                  className={`hover:bg-gray-50 ${selectedGroups.has(group.id) ? 'bg-blue-50' : ''}`}
+                >
+                  <td className="p-2 border-b">
+                    <input
+                      type="checkbox"
+                      checked={selectedGroups.has(group.id)}
+                      onChange={() => toggleGroupSelection(group.id)}
+                      disabled={!!group.rsvpCode}
+                      className={`rounded ${group.rsvpCode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    />
+                  </td>
+                  <td className="p-2 text-left border-b">{group.groupInvite}</td>
+                  <td className="p-2 text-left border-b">{group.contact}</td>
+                  <td className="p-2 text-left border-b">
+                    <ul className="list-disc list-inside">
+                      {group.guests.map((guest, index) => (
+                        <li key={index} className="text-sm">
+                          {guest.fullName}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="p-2 border-b text-left bg-blue-50">
+                    {group.rsvpCode ? (
+                      <a 
+                        href={"/?code=" + group.rsvpCode}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        {"/?code=" + group.rsvpCode}
+                      </a>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                  </td>
+                  <td className="p-2 border-b text-left bg-blue-50">
+                    {group.guests.some(g => g.coming !== undefined) ? (
+                      <div>
+                        Coming: {totalComing} / {group.guests.length}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">NA</span>
+                    )}
+                  </td>
+                  <td className="p-2 border-b text-left bg-blue-50">
+                    {group.guests.some(g => g.busTime !== undefined) ? (
+                      <div className="text-sm">
+                        <div>Total: {total} / {totalComing}</div>
+                        {total > 0 && (
+                          <div className="text-gray-600">
+                            <div>16:30: {bus1630}</div>
+                            <div>17:00: {bus1700}</div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">NA</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

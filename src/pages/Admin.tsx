@@ -5,19 +5,36 @@ import { signOut } from 'firebase/auth';
 import { collection, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore';
 import GuestTable from '../components/GuestTable';
 import AddGuestForm from '../components/AddGuestForm';
+import { Guest, GuestGroup } from '../types/interfaces';
 
-interface Guest {
-  fullName: string;
-  coming?: boolean;
-  needsBus?: boolean;
-}
+function computeGuestStats(guestGroup: GuestGroup[]) {
+  let totalInvited = 0;
+  let totalComing = 0;
+  let totalResponded = 0;
+  let totalNeedingBus = 0;
 
-interface GuestGroup {
-  id: string;
-  groupInvite: string;
-  contact: string;
-  rsvpCode?: string;
-  guests: Guest[];
+  guestGroup.forEach(group => {
+    group.guests.forEach(guest => {
+      totalInvited++;
+      if (guest.coming !== undefined) {
+        totalResponded++;
+        if (guest.coming) totalComing++;
+      }
+      if (guest.busTime && guest.busTime !== 'none') {
+        totalNeedingBus++;
+      }
+    });
+  });
+
+  const totalNotComing = totalResponded - totalComing;
+
+  return {
+    totalInvited,
+    totalComing,
+    totalResponded,
+    totalNotComing,
+    totalNeedingBus,
+  };
 }
 
 const Admin: React.FC = () => {
@@ -106,18 +123,13 @@ const Admin: React.FC = () => {
     }
   };
 
-  // Calculate statistics
-  const totalInvited = guestGroups.reduce((sum, group) => sum + group.guests.length, 0);
-  const totalComing = guestGroups.reduce((sum, group) => 
-    sum + group.guests.filter(guest => guest.coming).length, 0
-  );
-  const totalResponded = guestGroups.reduce((sum, group) => 
-    sum + group.guests.filter(guest => guest.coming !== undefined).length, 0
-  );
-  const totalNotComing = totalResponded - totalComing;
-  const totalNeedingBus = guestGroups.reduce((sum, group) => 
-    sum + group.guests.filter(guest => guest.needsBus).length, 0
-  );
+  const {
+    totalInvited,
+    totalComing,
+    totalResponded,
+    totalNotComing,
+    totalNeedingBus,
+  } = computeGuestStats(guestGroups);
 
   return (
     <div className="p-8 max-w-7xl mx-auto">

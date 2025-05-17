@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-
-interface Guest {
-  fullName: string;
-  coming?: boolean;
-  needsBus?: boolean;
-}
+import { Guest } from '../types/interfaces';
 
 interface AddGuestFormProps {
   isOpen: boolean;
