@@ -92,10 +92,10 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     const resizeObserver = new ResizeObserver(() => {
       const rect = envelope.getBoundingClientRect();
       const envelopeHeight = rect.height;
-      const containerHeight = envelopeHeight * 2.2;
+      const containerHeight = envelopeHeight * 2.5;
   
       container.style.height = `${containerHeight}px`;
-      envelope.style.bottom = `${envelopeHeight * -0.3}px`;
+      envelope.style.bottom = `${envelopeHeight * -0.4}px`;
     });
   
     resizeObserver.observe(envelope);
@@ -108,7 +108,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
   
 
   return (
-    <div className="animation-container bg-[rgb(97,51,51)] flex items-center justify-center h-screen">
+    <div className="animation-container flex items-center justify-center h-screen">
       <canvas ref={canvasRef} width={1200} height={800} style={{ display: 'none' }}/>
       <div className="animation-wrapper">
       <div className="scene" style={{ visibility: imageReady ? 'visible' : 'hidden' }}>
