@@ -13,7 +13,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: min(50vw, 1200px);
+  width: min(50vw, 800px);
   aspect-ratio: 3 / 2;
   display: flex;
   justify-content: center;
@@ -33,8 +33,8 @@
 .envelope {
   width: 100%;
   height: 100%;
-  max-width: 600px;
-  max-height: 400px;
+  max-width: 400px;
+  max-height: 300px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 3s ease-in-out;
@@ -46,6 +46,7 @@
 .envelope-back {
   position: absolute;
   width: 100%;
+  height: 100%;
   backface-visibility: hidden;
   z-index: 1;
 }
@@ -98,6 +99,7 @@
 .envelope-background {
   position: absolute;
   width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   z-index: 2;

@@ -49,8 +49,8 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     
         setTimeout(() => {
           lid!.style.transform = 'rotateX(-160deg)';
-          lidShadow!.style.opacity = '1';
-          lidShadow!.style.transform = 'rotateX(-180deg)';
+          // lidShadow!.style.opacity = '1';
+          // lidShadow!.style.transform = 'rotateX(-180deg)';
           invitation!.style.opacity = '1';
         }, 4000);
     
@@ -59,7 +59,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
         }, 4600);
     
         setTimeout(() => {
-          lidShadow!.style.opacity = '0';
+          // lidShadow!.style.opacity = '0';
           lid!.style.zIndex = '2';
         }, 4800);
     
@@ -117,7 +117,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
           <div className="front-envelope">
             <img src={envelopeBackground} className="envelope-background" alt="bg" />
             <img src={invitationImg} ref={invitationRef} className="invitation" id="invitation" alt="invitation" />
-            <img src={lidShadow} ref={lidShadowRef} className="lid-shadow" alt="lid shadow" />
+            {/* <img src={lidShadow} ref={lidShadowRef} className="lid-shadow" alt="lid shadow" /> */}
             <img src={envelopeFront} className="envelope-front" alt="envelope front" />
             <img src={lidClosed} ref={lidRef} className="lid" id="lid" alt="lid" />
           </div>

@@ -57,6 +57,7 @@ const Home: React.FC = () => {
   const handleScroll = useCallback(() => {
     const sections = ['hero', 'details', 'shabbat', 'venues', 'shuttles', 'gifts'];
     const scrollPosition = window.scrollY + window.innerHeight / 2;
+    const rsvpCode = searchParams.get('code');
 
     for (const section of sections) {
       const element = document.getElementById(section);
@@ -68,15 +69,15 @@ const Home: React.FC = () => {
         if (scrollPosition >= offsetTop && scrollPosition <= offsetBottom) {
           const currentPath = location.pathname.split('/').pop();
           if (currentPath !== section && section !== 'hero') {
-            navigate(`/${section}`, { replace: true });
+            navigate(`/${section}${rsvpCode ? `?code=${rsvpCode}` : ''}`, { replace: true });
           } else if (currentPath !== '' && section === 'hero') {
-            navigate('/', { replace: true });
+            navigate(`/${rsvpCode ? `?code=${rsvpCode}` : ''}`, { replace: true });
           }
           break;
         }
       }
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, navigate, searchParams]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -111,7 +112,9 @@ const Home: React.FC = () => {
         </button>
       </div>
 
+      <section>
       <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
+      </section>
 
       <DetailsSection />
       <VenueSection />
