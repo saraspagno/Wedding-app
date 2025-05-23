@@ -28,7 +28,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto my-32 p-8 bg-white rounded-lg shadow-lg">
-      <h2 className="font-heading text-primary text-center mb-8 text-4xl">
+      <h2 className="font-playfair text-primary text-center mb-8 text-4xl">
         {isSignUp ? 'Create Account' : 'Welcome Back'}
       </h2>
       

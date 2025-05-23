@@ -1,22 +1,27 @@
 import React from 'react';
+import Countdown from '../Countdown';
 
 const DetailsSection: React.FC = () => {
+  // You can easily change this date and time
+  const weddingDate = new Date('2026-06-11T17:30:00');
+
   return (
-    <section id="details" className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+    <section id="details" className="w-full flex items-center justify-center bg-gradient-to-br py-16">
       <div className="max-w-4xl px-4">
-        <div className="font-walbaum text-center space-y-6">
-          <h1 className="text-5xl md:text-6xl font-light tracking-wide">
+        <div className="text-center space-y-4">
+          <h1 className="font-playfair font-light text-5xl md:text-6xl tracking-wide">
             Sara & Gavriel
           </h1>
-          <h2 className="text-3xl md:text-4xl font-light tracking-wide">
+          <h2 className="font-playfair italic font-light text-3xl md:text-4xl tracking-wide">
             the wedding
           </h2>
-          <p className="text-2xl md:text-3xl font-light tracking-wide">
+          <p className="font-playfair text-2xl md:text-3xl tracking-wide">
             Thursday, June 11, 2026
           </p>
-          <p className="text-2xl md:text-3xl font-light tracking-wide">
+          <p className="font-playfair text-2xl md:text-3xl tracking-wide">
             ISRAEL
           </p>
+          <Countdown targetDate={weddingDate} />
         </div>
       </div>
     </section>

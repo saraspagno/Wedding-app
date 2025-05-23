@@ -55,7 +55,7 @@ const Home: React.FC = () => {
 
   // Handle scroll-based URL updates
   const handleScroll = useCallback(() => {
-    const sections = ['hero', 'details', 'shabbat', 'venues', 'shuttles', 'gifts'];
+    const sections = ['hero', 'details', 'shabbat', 'venue', 'shuttles', 'gifts'];
     const scrollPosition = window.scrollY + window.innerHeight / 2;
     const rsvpCode = searchParams.get('code');
 

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Header from './components/Header/Header';
+import Header from './components/header/Header';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Login from './pages/Login';
@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/details" element={<Home />} />
-          <Route path="/venues" element={<Home />} />
+          <Route path="/venue" element={<Home />} />
           <Route path="/shuttles" element={<Home />} />
           <Route path="/shabbat" element={<Home />} />
           <Route path="/gifts" element={<Home />} />
