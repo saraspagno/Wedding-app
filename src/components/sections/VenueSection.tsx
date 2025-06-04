@@ -1,13 +1,109 @@
 import React from 'react';
+import background from '../../assets/background2.jpeg';
+import shuttle from '../../assets/schedule/shuttle.png';
+import cheers from '../../assets/schedule/cheers.png';
+import huppa from '../../assets/schedule/huppa.png';
+import sunset from '../../assets/us/sunset.jpg';
+import party from '../../assets/us/party.jpg';
 
 const VenueSection: React.FC = () => {
   return (
-    <section id="venue" className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100">
-      <div className="max-w-4xl px-4">
-        <h2 className="text-4xl font-bold text-center mb-8">Venue</h2>
-        <div className="prose prose-lg mx-auto">
-          {/* Add your venue content here */}
-          <p className="text-center text-gray-600">Coming soon...</p>
+    <section
+      id="venue"
+      className="w-full flex flex-col items-center justify-center relative"
+    >
+      {/* Details Section */}
+      <div className="w-full relative pb-32">
+        <div
+          className="absolute top-0 left-0 w-full h-full flex justify-center pointer-events-none"
+          style={{ zIndex: 0 }}
+        >
+          <img
+            src={background}
+            className="w-full object-top"
+            style={{ height: '100%', maxHeight: '100%', minHeight: '100%' }}
+          />
+        </div>
+
+        {/* Title */}
+        <h2 className="text-4xl font-serif text-white mb-12 relative z-10 pt-16">Our Day</h2>
+
+        {/* Column Layout */}
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+            {/* Sunset Image */}
+            <div className="flex flex-col items-center text-center p-6 md:-mt-64">
+              <img
+                src={sunset}
+                alt="Sunset"
+                className="w-64 h-auto shadow-lg"
+              />
+            </div>
+
+            {/* Left Column */}
+            <div className="flex flex-col items-center text-center p-6">
+              <div className="w-20 h-20 mb-4">
+                <img
+                  src={shuttle}
+                  alt="Shuttle Icon"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-white">Transportation</h3>
+              <p className="text-white/90">
+                Available from and to Hilton, Tel-Aviv.
+                <br />
+                Leaving at 16:30.
+                <br />
+                Returning at 00:00, 00:30 and 1:30.
+              </p>
+            </div>
+
+            {/* Center Column */}
+            <div className="flex flex-col items-center text-center p-6">
+              <div className="w-20 h-20 mb-4">
+                <img
+                  src={cheers}
+                  alt="Cheers Icon"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-white">Reception</h3>
+              <p className="text-white/90">
+                Celebrate with us at our reception!
+                <br />
+                Kedma, Neve Ilan.
+                <br />
+                Starting at 18:00.
+              </p>
+            </div>
+
+            {/* Right Column */}
+            <div className="flex flex-col items-center text-center p-6">
+              <div className="w-20 h-20 mb-4">
+                <img
+                  src={huppa}
+                  alt="Huppa Icon"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-white">Ceremony</h3>
+              <p className="text-white/90">
+                Join us for our ceremony under the huppa.
+                <br />
+                Starting at 19:00.
+              </p>
+            </div>
+
+            {/* Party Image */}
+            <div className="flex flex-col items-center text-center p-6 md:-mt-64">
+              <img
+                src={party}
+                alt="Party"
+                className="w-64 h-auto shadow-lg"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -7,12 +7,16 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    { name: 'Details', id: 'details', path: '/details' },
-    { name: 'Venue', id: 'venue', path: '/venue' },
-    { name: 'Shuttles', id: 'shuttles', path: '/shuttles' },
-    { name: 'Shabbat', id: 'shabbat', path: '/shabbat' },
-    { name: 'Gifts', id: 'gifts', path: '/gifts' },
+    { name: 'Details', id: 'details'},
+    { name: 'Venue', id: 'venue'},
+    { name: 'Shabbat', id: 'shabbat'},
+    { name: 'Gifts', id: 'gifts'},
   ];
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -49,9 +53,12 @@ const Header: React.FC = () => {
 
           {/* Logo - Centered */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <Link to="/" className="flex items-center">
+            <button 
+              onClick={handleLogoClick}
+              className="flex items-center cursor-pointer"
+            >
               <img src={logo} alt="Sara & Gavriel" className="h-24 w-auto" />
-            </Link>
+            </button>
           </div>
 
           {/* Login and Language - Always right */}
@@ -71,15 +78,14 @@ const Header: React.FC = () => {
           <div className="absolute left-4 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
             <div className="py-1" role="menu" aria-orientation="vertical">
               {menuItems.map((item) => (
-                <Link
+                <button
                   key={item.id}
-                  to={item.path}
                   onClick={() => scrollToSection(item.id)}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   role="menuitem"
                 >
                   {item.name}
-                </Link>
+                </button>
               ))}
             </div>
           </div>
