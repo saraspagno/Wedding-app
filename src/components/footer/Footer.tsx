@@ -1,14 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import background from '../../assets/background1.jpeg';
-import { menuItems } from '../../declarations/menuItems';
-
-const scrollToSection = (sectionId: string) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
-};
 
 const Footer: React.FC = () => {
   return (
@@ -21,27 +12,10 @@ const Footer: React.FC = () => {
       }}
     >
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Menu Links - Same as Header */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Menu</h3>
-            <ul className="space-y-2">
-              {menuItems.map((item) => (
-                <li key={item.id}>
-                  <button
-                    onClick={() => scrollToSection(item.id)}
-                    className="hover:text-gray-400 transition-colors bg-transparent border-none p-0 m-0 text-left cursor-pointer text-base"
-                  >
-                    {item.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
+        <div className="font-playfair grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Contact Information */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
+            <h3 className="text-xl font-semibold mb-4">Contacts</h3>
             <ul className="space-y-2">
               <li>
                 <span className="font-medium">Sara:</span>
@@ -50,9 +24,9 @@ const Footer: React.FC = () => {
                 </a>
               </li>
               <li>
-                <span className="font-medium">Sara's Email:</span>
-                <a href="mailto:sara@example.com" className="hover:text-gray-400 transition-colors ml-2">
-                  sara@example.com
+                <span className="font-medium">Email:</span>
+                <a href="mailto:saraspagno@gmail.com" className="hover:text-gray-400 transition-colors ml-2">
+                  saraspagno@gmail.com
                 </a>
               </li>
               <li>
@@ -64,11 +38,10 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* About */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">About</h3>
-            <p>
-              Join us in celebrating our special day. We're excited to share this moment with you.
+          {/* Celebration Message */}
+          <div className="flex items-center justify-center">
+            <p className="text-xl text-center">
+              We can't wait to celebrate with you!
             </p>
           </div>
         </div>

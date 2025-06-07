@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import LanguageSwitcher from '../LanguageSwitcher';
 import logo from '../../assets/logo.png';
@@ -6,6 +6,26 @@ import { menuItems } from '../../declarations/menuItems';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,6 +47,7 @@ const Header: React.FC = () => {
           {/* Menu Button - Always left */}
           <div className="flex-none ml-4">
             <button
+              ref={menuButtonRef}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
             >
@@ -55,21 +76,18 @@ const Header: React.FC = () => {
             </button>
           </div>
 
-          {/* Login and Language - Always right */}
+          {/* Language - Always right */}
           <div className="flex-none flex items-center gap-4 mr-4">
-            <Link 
-              to="/admin" 
-              className="no-underline px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors"
-            >
-              Login
-            </Link>
             <LanguageSwitcher />
           </div>
         </div>
 
         {/* Menu Dropdown */}
         {isMenuOpen && (
-          <div className="absolute left-4 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+          <div 
+            ref={menuRef}
+            className="absolute left-4 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+          >
             <div className="py-1" role="menu" aria-orientation="vertical">
               {menuItems.map((item) => (
                 <button
