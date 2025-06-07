@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import LanguageSwitcher from '../LanguageSwitcher';
 import logo from '../../assets/logo.png';
 import { menuItems } from '../../declarations/menuItems';
