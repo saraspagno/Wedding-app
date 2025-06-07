@@ -1,12 +1,13 @@
 import React from 'react';
 import Countdown from '../Countdown';
+import background from '../../assets/background1.jpeg';
 
 const DetailsSection: React.FC = () => {
   // You can easily change this date and time
   const weddingDate = new Date('2026-06-11T17:30:00');
 
   return (
-    <section id="details" className="w-full flex items-center justify-center bg-gradient-to-br py-16">
+    <section id="details" className="w-full flex items-center justify-center py-8">
       <div className="max-w-4xl px-4">
         <div className="text-center space-y-4">
           <h1 className="font-playfair font-light text-5xl md:text-6xl tracking-wide">

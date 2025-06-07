@@ -2,16 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LanguageSwitcher from '../LanguageSwitcher';
 import logo from '../../assets/logo.png';
+import { menuItems } from '../../declarations/menuItems';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const menuItems = [
-    { name: 'Details', id: 'details'},
-    { name: 'Venue', id: 'venue'},
-    { name: 'Shabbat', id: 'shabbat'},
-    { name: 'Gifts', id: 'gifts'},
-  ];
 
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();

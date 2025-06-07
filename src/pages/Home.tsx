@@ -5,11 +5,12 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
 import RSVPForm from '../components/RSVPForm';
 import DetailsSection from '../components/sections/DetailsSection';
-import VenueSection from '../components/sections/VenueSection';
+import ScheduleSection from '../components/sections/ScheduleSection';
 import GiftSection from '../components/sections/GiftSection';
 import ShabbatSection from '../components/sections/ShabbatSection';
 import { GuestGroup } from '../types/interfaces';
 import '../style/animation.css';
+import background from '../assets/background1.jpeg';
 
 const Home: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -78,12 +79,19 @@ const Home: React.FC = () => {
         </button>
       </div>
 
-      <section id="home">
+      <section
+        id="home"
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
+        <DetailsSection />
       </section>
 
-      <DetailsSection />
-      <VenueSection />
+      <ScheduleSection />
       <ShabbatSection />
       <GiftSection />
 
