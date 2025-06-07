@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { db } from '../types/firebase';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
 import RSVPForm from '../components/RSVPForm';
@@ -13,6 +14,7 @@ import '../style/animation.css';
 import background from '../assets/background1.jpeg';
 
 const Home: React.FC = () => {
+  const [authReady, setAuthReady] = useState(false);
   const [searchParams] = useSearchParams();
   const [guestGroup, setGuestGroup] = useState<GuestGroup | null>(null);
   const [loading, setLoading] = useState(true);
@@ -20,6 +22,19 @@ const Home: React.FC = () => {
   const [showRSVPModal, setShowRSVPModal] = useState(false);
 
   useEffect(() => {
+    const auth = getAuth();
+    signInAnonymously(auth)
+      .then(() => {
+        setAuthReady(true);
+      })
+      .catch((error) => {
+        console.error('Anonymous sign-in failed', error);
+        setError('Could not authenticate with server. Please try again.');
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!authReady) return;
     const fetchGuestGroup = async () => {
       const rsvpCode = searchParams.get('code');
       if (!rsvpCode) {
@@ -49,7 +64,7 @@ const Home: React.FC = () => {
     };
 
     fetchGuestGroup();
-  }, [searchParams]);
+  }, [authReady, searchParams]);
 
   const handleRSVPComplete = (updatedGroup: GuestGroup) => {
     setGuestGroup(updatedGroup);
@@ -65,9 +80,16 @@ const Home: React.FC = () => {
     setShowRSVPModal(true);
   };
 
-  if (loading) return <div>Loading...</div>;
 
   return (
+    <>
+        {/* Fullscreen Loading Overlay */}
+        {(loading || !authReady) && (
+          <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+            <div className="text-xl font-semibold">Loading...</div>
+          </div>
+        )}
+    
     <main className="relative">
       {/* Floating RSVP Button */}
       <div className="fixed top-1/4 left-8 z-10 transform -translate-y-1/2">
@@ -121,6 +143,7 @@ const Home: React.FC = () => {
         </div>
       )}
     </main>
+    </>
   );
 };
 
