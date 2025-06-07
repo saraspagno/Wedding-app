@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { getAuth, signInAnonymously } from 'firebase/auth';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Home from './pages/Home';
@@ -8,6 +10,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './types/i18n';
 
 function App() {
+  useEffect(() => {
+    const auth = getAuth();
+    signInAnonymously(auth).catch((error) => {
+      console.error('Anonymous sign-in failed', error);
+    });
+  }, []);
+
   return (
     <Router>
       <div className="min-h-screen text-center flex flex-col">
