@@ -19,6 +19,8 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
   const envelopeBackRef = useRef<HTMLImageElement>(null);
   const envelopeRef = useRef<HTMLDivElement>(null);
 
+  const hasRunAnimationRef = useRef(false);
+
   useEffect(() => {
     const isPhone = window.innerWidth <= 768;
     const envelope = envelopeRef.current;
@@ -28,29 +30,38 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
 
     if (!canvas || !envelope || !lid || !invitation) return;
 
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      const baseImage = new Image();
-      baseImage.src = envelopeBackNamed;
+    const ctx = canvas.getContext('2d');
+    const baseImage = new Image();
 
-      baseImage.onload = () => {
-        if (!ctx) return;
-        ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
-        ctx.font = '40px Georgia';
-        ctx.fillStyle = '#3a2b1a';
-        ctx.textAlign = 'center';
-        ctx.fillText(`${guestName}`, canvas.width / 2, 400);
-        envelopeBackRef.current!.src = canvas.toDataURL('image/png');
-        setImageReady(true);
+    const onloadHandler = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
+      ctx.font = '40px Georgia';
+      ctx.fillStyle = '#3a2b1a';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${guestName}`, canvas.width / 2, 400);
+      envelopeBackRef.current!.src = canvas.toDataURL('image/png');
+      setImageReady(true);
 
+      if (!hasRunAnimationRef.current) {
+        hasRunAnimationRef.current = true;
         if (isPhone) {
           runPhoneAnimation(envelope, lid, invitation);
         } else {
           runDesktopAnimation(envelope, lid, invitation);
         }
-      };
-    }
+      }
+    };
+
+    baseImage.onload = onloadHandler;
+    baseImage.src = envelopeBackNamed;
+
+    return () => {
+      baseImage.onload = null;
+    };
   }, [guestName]);
+
 
   useEffect(() => {
     const envelope = envelopeRef.current;
@@ -73,8 +84,6 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
       resizeObserver.disconnect();
     };
   }, []);
-
-
 
   return (
     <div className="animation-container flex items-center justify-center h-screen">
@@ -155,6 +164,7 @@ function runPhoneAnimation(
   lid: HTMLImageElement,
   invitation: HTMLImageElement
 ) {
+
   // Turn the Envelope around
   setTimeout(() => {
     envelope!.style.transform = 'rotateY(180deg)';
@@ -191,11 +201,10 @@ function runPhoneAnimation(
   }, 7300);
 
   setTimeout(() => {
-    invitation!.style.transform = 'rotateZ(0deg) scale(1.6)'; 
+    invitation!.style.transform = 'rotateZ(0deg) scale(1.6)';
     invitation!.style.top = '38%';
     invitation!.style.left = '50%';
-  }, 9000); 
-
+  }, 9000);
   setTimeout(() => {
     window.scrollBy({
       top: window.innerHeight / 3,
