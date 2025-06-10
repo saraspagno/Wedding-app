@@ -61,7 +61,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     const resizeObserver = new ResizeObserver(() => {
       const rect = envelope.getBoundingClientRect();
       const envelopeHeight = rect.height;
-      const containerHeight = envelopeHeight * 2.5;
+      const containerHeight = envelopeHeight * 2.7;
 
       container.style.height = `${containerHeight}px`;
       envelope.style.bottom = `${envelopeHeight * -0.4}px`;
@@ -140,6 +140,14 @@ function runDesktopAnimation(
   setTimeout(() => {
     invitation!.style.left = '100%';
   }, 9000);
+
+  setTimeout(() => {
+    window.scrollBy({
+      top: window.innerHeight / 3,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, 11500);
 }
 
 function runPhoneAnimation(
@@ -187,4 +195,12 @@ function runPhoneAnimation(
     invitation!.style.top = '38%';
     invitation!.style.left = '50%';
   }, 9000); 
+
+  setTimeout(() => {
+    window.scrollBy({
+      top: window.innerHeight / 3,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }, 11500);
 }

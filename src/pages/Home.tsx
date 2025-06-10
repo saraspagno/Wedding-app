@@ -83,66 +83,66 @@ const Home: React.FC = () => {
 
   return (
     <>
-        {/* Fullscreen Loading Overlay */}
-        {(loading || !authReady) && (
-          <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
-            <div className="text-xl font-semibold">Loading...</div>
+      {/* Fullscreen Loading Overlay */}
+      {(loading || !authReady) && (
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+          <div className="text-xl font-semibold">Loading...</div>
+        </div>
+      )}
+
+      <main className="relative">
+        <section
+          id="home"
+          style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
+
+          <button
+            onClick={handleRSVPClick}
+            className="mt-[40px] md:mt-0 text-[#4a3626] border-[2px] border-[#4a3626] font-medium overflow-hidden px-20 py-2 rounded-none hover:bg-[#4a3626] hover:text-[#f5f0e6] active:opacity-75 outline-none duration-300 bg-transparent text-lg tracking-wide uppercase font-sans"
+          >
+            RSVP
+          </button>
+
+
+
+          <DetailsSection />
+        </section>
+
+        <ScheduleSection />
+        <ShabbatSection />
+        <GiftSection />
+
+        {/* Error Message Modal */}
+        {error && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-20 max-w-md">
+            <p className="text-red-600 text-center">{error}</p>
+            <button
+              onClick={() => setError(null)}
+              className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            >
+              Close
+            </button>
           </div>
         )}
-    
-    <main className="relative">
-      {/* Floating RSVP Button */}
-      <div className="fixed top-1/4 left-8 z-10 transform -translate-y-1/2">
-        <button
-          onClick={handleRSVPClick}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-8 rounded-full shadow-lg transform transition-transform hover:scale-105"
-        >
-          RSVP
-        </button>
-      </div>
 
-      <section
-        id="home"
-        style={{
-          backgroundImage: `url(${background})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
-        <DetailsSection />
-      </section>
-
-      <ScheduleSection />
-      <ShabbatSection />
-      <GiftSection />
-
-      {/* Error Message Modal */}
-      {error && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-20 max-w-md">
-          <p className="text-red-600 text-center">{error}</p>
-          <button
-            onClick={() => setError(null)}
-            className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-          >
-            Close
-          </button>
-        </div>
-      )}
-
-      {/* RSVP Modal */}
-      {showRSVPModal && guestGroup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <RSVPForm
-              guestGroup={guestGroup}
-              onRSVPComplete={handleRSVPComplete}
-              onClose={() => setShowRSVPModal(false)}
-            />
+        {/* RSVP Modal */}
+        {showRSVPModal && guestGroup && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+              <RSVPForm
+                guestGroup={guestGroup}
+                onRSVPComplete={handleRSVPComplete}
+                onClose={() => setShowRSVPModal(false)}
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </main>
+        )}
+      </main>
     </>
   );
 };
