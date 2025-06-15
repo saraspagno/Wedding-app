@@ -101,93 +101,110 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
   }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">RSVP for {guestGroup.groupInvite}</h1>
+    <div className="flex flex-col sm:mx-0">
+      <div className="relative mb-6">
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700"
+          className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 text-xl"
         >
           ✕
         </button>
+        <div>
+          <h1 className="text-2xl font-bold">Dear {guestGroup.groupInvite},</h1>
+          <p className="text-lg text-gray-600 mt-1">Will you attend?</p>
+        </div>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8 flex-1 overflow-y-auto">
         {formData.map((guest, index) => (
-          <div key={index} className="border-b pb-4 last:border-b-0">
-            <h3 className="font-semibold mb-2">{guest.fullName}</h3>
-            <div className="space-y-4">
-              <div className="flex gap-4">
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={guest.coming === true}
-                    onChange={() => updateGuestStatus(index, true)}
-                    className="mr-2"
-                  />
-                  Coming
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    checked={guest.coming === false}
-                    onChange={() => updateGuestStatus(index, false)}
-                    className="mr-2"
-                  />
-                  Not Coming
-                </label>
+          <div key={index} className="border-b pb-6 last:border-b-0">
+            <h3 className="text-left mb-4 text-base font-normal">{guest.fullName}</h3>
+            
+            {/* Coming/Not Coming Selection */}
+            <div className="mb-4">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => updateGuestStatus(index, true)}
+                  className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
+                    guest.coming === true
+                      ? 'bg-green-600 border-green-600 text-white'
+                      : 'bg-white border-gray-300 text-gray-700 hover:border-green-400'
+                  }`}
+                >
+                  Attending
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateGuestStatus(index, false)}
+                  className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
+                    guest.coming === false
+                      ? 'bg-red-600 border-red-600 text-white'
+                      : 'bg-white border-gray-300 text-gray-700 hover:border-red-400'
+                  }`}
+                >
+                  Not Attending
+                </button>
               </div>
-              {guest.coming && (
-                <div className="mt-4">
-                  <h4 className="font-medium mb-2">Buses from Tel Aviv City Center</h4>
-                  <div className="space-y-2">
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={guest.busTime === 'none'}
-                        onChange={() => updateBusTime(index, 'none')}
-                        className="mr-2"
-                      />
-                      No Bus
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={guest.busTime === '16:30'}
-                        onChange={() => updateBusTime(index, '16:30')}
-                        className="mr-2"
-                      />
-                      Bus at 16:30
-                    </label>
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={guest.busTime === '17:00'}
-                        onChange={() => updateBusTime(index, '17:00')}
-                        className="mr-2"
-                      />
-                      Bus at 17:00
-                    </label>
-                  </div>
-                </div>
-              )}
             </div>
+
+            {/* Bus Selection - only show if coming */}
+            {guest.coming && (
+              <div>
+                <h4 className="text-left font-normal mb-3 text-gray-700 text-sm">Shuttle from Tel-Aviv to venue?</h4>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => updateBusTime(index, 'none')}
+                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
+                      guest.busTime === 'none'
+                        ? 'bg-gray-600 border-gray-600 text-white'
+                        : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
+                    }`}
+                  >
+                    None
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => updateBusTime(index, '16:30')}
+                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
+                      guest.busTime === '16:30'
+                        ? 'bg-blue-600 border-blue-600 text-white'
+                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400'
+                    }`}
+                  >
+                    16:30
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => updateBusTime(index, '17:00')}
+                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
+                      guest.busTime === '17:00'
+                        ? 'bg-blue-600 border-blue-600 text-white'
+                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400'
+                    }`}
+                  >
+                    17:00
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 pt-4 pb-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
+            className="flex-1 bg-gray-600 text-white py-2 px-4 border-2 border-gray-600 hover:bg-gray-700 transition-colors text-sm"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="flex-1 bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
+            className="flex-1 bg-green-600 text-white py-2 px-4 border-2 border-green-600 hover:bg-green-700 transition-colors text-sm"
           >
-            Submit RSVP
+            Submit
           </button>
         </div>
       </form>
