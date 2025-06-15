@@ -20,6 +20,7 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showRSVPModal, setShowRSVPModal] = useState(false);
+  const [animationReady, setAnimationReady] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
@@ -37,7 +38,7 @@ const Home: React.FC = () => {
     if (!authReady) return;
     const fetchGuestGroup = async () => {
       const rsvpCode = searchParams.get('code');
-      if (!rsvpCode) {
+      if (!rsvpCode) {        
         setLoading(false);
         return;
       }
@@ -84,7 +85,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Fullscreen Loading Overlay */}
-      {(loading || !authReady) && (
+      {(loading || !authReady || !animationReady) && (
         <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
           <div className="text-xl font-semibold">Loading...</div>
         </div>
@@ -99,7 +100,7 @@ const Home: React.FC = () => {
             backgroundPosition: 'center',
           }}
         >
-          <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} />
+          <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} onReady={() => setAnimationReady(true)}/>
 
           <button
             onClick={handleRSVPClick}

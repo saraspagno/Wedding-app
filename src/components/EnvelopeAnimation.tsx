@@ -8,9 +8,10 @@ import lidOpen from '../assets/animation/lid_open.png';
 
 interface EnvelopeAnimationProps {
   guestName: string;
+  onReady?: () => void;
 }
 
-const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
+const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onReady }) => {
   const [imageReady, setImageReady] = React.useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -43,13 +44,14 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
       ctx.fillText(`${guestName}`, canvas.width / 2, 400);
       envelopeBackRef.current!.src = canvas.toDataURL('image/png');
       setImageReady(true);
+      onReady?.();
 
       if (!hasRunAnimationRef.current) {
         hasRunAnimationRef.current = true;
         if (isPhone) {
-          runPhoneAnimation(envelope, lid, invitation);
+          runCommonAnimation(envelope, lid, invitation, 'rotateZ(0deg) scale(1.6)', '38%', '50%');
         } else {
-          runDesktopAnimation(envelope, lid, invitation);
+          runCommonAnimation(envelope, lid, invitation, 'rotateZ(0deg) scale(1.3)', '25%', '100%');
         }
       }
     };
@@ -60,7 +62,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     return () => {
       baseImage.onload = null;
     };
-  }, [guestName]);
+  }, [guestName, onReady]);
 
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
     <div className="animation-container flex items-center justify-center h-screen">
       <canvas ref={canvasRef} width={1200} height={800} style={{ display: 'none' }} />
       <div className="animation-wrapper">
-        <div className="scene" style={{ visibility: imageReady ? 'visible' : 'hidden' }}>
+        <div className="scene">
           <div className="envelope" id="envelope" ref={envelopeRef}>
             <img ref={envelopeBackRef} className="envelope-back" alt="envelope back" style={{ display: imageReady ? 'block' : 'none' }} />
             <div className="front-envelope">
@@ -107,11 +109,13 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName }) => {
 
 export default EnvelopeAnimation;
 
-
-function runDesktopAnimation(
+function runCommonAnimation(
   envelope: HTMLDivElement,
   lid: HTMLImageElement,
-  invitation: HTMLImageElement
+  invitation: HTMLImageElement,
+  finalTransform: string,
+  finalTop: string,
+  finalLeft: string
 ) {
   setTimeout(() => {
     envelope!.style.transform = 'rotateY(180deg)';
@@ -119,8 +123,6 @@ function runDesktopAnimation(
 
   setTimeout(() => {
     lid!.style.transform = 'rotateX(-160deg)';
-    // lidShadow!.style.opacity = '1';
-    // lidShadow!.style.transform = 'rotateX(-180deg)';
     invitation!.style.opacity = '1';
   }, 4000);
 
@@ -129,7 +131,6 @@ function runDesktopAnimation(
   }, 4600);
 
   setTimeout(() => {
-    // lidShadow!.style.opacity = '0';
     lid!.style.zIndex = '2';
   }, 4800);
 
@@ -147,64 +148,11 @@ function runDesktopAnimation(
   }, 7300);
 
   setTimeout(() => {
-    invitation!.style.left = '100%';
+    invitation!.style.transform = finalTransform;
+    invitation!.style.top = finalTop;
+    invitation!.style.left = finalLeft;
   }, 9000);
 
-  setTimeout(() => {
-    window.scrollBy({
-      top: window.innerHeight / 3,
-      left: 0,
-      behavior: 'smooth'
-    });
-  }, 11500);
-}
-
-function runPhoneAnimation(
-  envelope: HTMLDivElement,
-  lid: HTMLImageElement,
-  invitation: HTMLImageElement
-) {
-
-  // Turn the Envelope around
-  setTimeout(() => {
-    envelope!.style.transform = 'rotateY(180deg)';
-  }, 1000);
-
-  // Open Lid first part.
-  setTimeout(() => {
-    lid!.style.transform = 'rotateX(-160deg)';
-    invitation!.style.opacity = '1';
-  }, 4000);
-
-  // Open lid second part.
-  setTimeout(() => {
-    lid!.src = lidOpen;
-  }, 4600);
-
-  // Now lid is in the background.
-  setTimeout(() => {
-    lid!.style.zIndex = '2';
-  }, 4800);
-
-  // Starts coming out.
-  setTimeout(() => {
-    invitation!.style.top = '-55%';
-    invitation!.style.transform = 'rotateZ(-90deg) scale(1)';
-    invitation!.style.zIndex = '3';
-  }, 6000);
-
-  setTimeout(() => {
-    invitation!.style.zIndex = '5';
-    invitation!.style.transform = 'rotateZ(0deg) scale(1.3)';
-    invitation!.style.top = '25%';
-    invitation!.style.left = '50%';
-  }, 7300);
-
-  setTimeout(() => {
-    invitation!.style.transform = 'rotateZ(0deg) scale(1.6)';
-    invitation!.style.top = '38%';
-    invitation!.style.left = '50%';
-  }, 9000);
   setTimeout(() => {
     window.scrollBy({
       top: window.innerHeight / 3,
