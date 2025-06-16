@@ -58,44 +58,48 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
   };
 
   const allGuestsResponded = guestGroup.guests.every(guest => guest.coming !== undefined);
-  const totalComing = guestGroup.guests.filter(guest => guest.coming).length;
-  const totalNeedingBus = guestGroup.guests.filter(guest => guest.busTime !== 'none').length;
-  const bus1630Count = guestGroup.guests.filter(guest => guest.busTime === '16:30').length;
-  const bus1700Count = guestGroup.guests.filter(guest => guest.busTime === '17:00').length;
 
   if (allGuestsResponded) {
+    const atLeastOneComing = guestGroup.guests.some(guest => guest.coming);
+    
     return (
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">Thank You!</h1>
-        <p className="text-lg mb-4">Thanks for confirming your presence, {guestGroup.groupInvite}!</p>
-        <div className="bg-gray-50 p-4 rounded mb-4">
-          <p className="mb-2"><strong>People Coming:</strong> {totalComing} / {guestGroup.guests.length}</p>
-          <p className="mb-2"><strong>Bus Transportation:</strong> {totalNeedingBus} people</p>
-          {totalNeedingBus > 0 && (
-            <div className="text-sm text-gray-600">
-              <p>Bus at 16:30: {bus1630Count} people</p>
-              <p>Bus at 17:00: {bus1700Count} people</p>
-            </div>
-          )}
-          <div className="mt-4 text-left">
-            <h3 className="font-semibold mb-2">Guest Details:</h3>
-            <ul className="space-y-2">
-              {guestGroup.guests.map((guest, index) => (
-                <li key={index} className="text-sm">
-                  {guest.fullName}: {guest.coming ? 'Coming' : 'Not Coming'}
-                  {guest.coming && guest.busTime !== 'none' && ` (Bus at ${guest.busTime})`}
-                </li>
-              ))}
-            </ul>
+      <div className="flex flex-col sm:mx-0">
+        <div className="relative mb-6">
+          <button
+            onClick={onClose}
+            className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 text-xl"
+          >
+            ✕
+          </button>
+          <div>
+            <p className="font-bold">
+              {atLeastOneComing 
+                ? "We look forward to celebrating with you" 
+                : "We are sorry you can't make it"
+              }
+            </p>
           </div>
         </div>
-        <p className="text-gray-600 mb-4">We look forward to celebrating with you!</p>
-        <button
-          onClick={onClose}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Close
-        </button>
+
+        <div className="mb-6">
+          <ul className="space-y-2">
+            {guestGroup.guests.map((guest, index) => (
+              <li key={index} className="text-left">
+                {guest.fullName}: {guest.coming ? 'Coming' : 'Not Coming'}
+                {guest.coming && guest.busTime !== 'none' && ` (Bus at ${guest.busTime})`}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex gap-2 pt-4">
+          <button
+            onClick={onClose}
+            className="flex-1 bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors text-sm shadow"
+          >
+            Close
+          </button>
+        </div>
       </div>
     );
   }
@@ -122,29 +126,31 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
             
             {/* Coming/Not Coming Selection */}
             <div className="mb-4">
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => updateGuestStatus(index, true)}
-                  className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
-                    guest.coming === true
-                      ? 'bg-green-600 border-green-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-700 hover:border-green-400'
-                  }`}
-                >
-                  Attending
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateGuestStatus(index, false)}
-                  className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
-                    guest.coming === false
-                      ? 'bg-red-600 border-red-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-700 hover:border-red-400'
-                  }`}
-                >
-                  Not Attending
-                </button>
+              <div className="bg-gray-100 p-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => updateGuestStatus(index, true)}
+                    className={`flex-1 py-2 px-3 transition-colors text-sm shadow ${
+                      guest.coming === true
+                        ? 'bg-gray-400 text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    Attending
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => updateGuestStatus(index, false)}
+                    className={`flex-1 py-2 px-3 transition-colors text-sm shadow ${
+                      guest.coming === false
+                        ? 'bg-gray-400 text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    Not Attending
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -152,60 +158,64 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
             {guest.coming && (
               <div>
                 <h4 className="text-left font-normal mb-3 text-gray-700 text-sm">Shuttle from Tel-Aviv to venue?</h4>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, 'none')}
-                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
-                      guest.busTime === 'none'
-                        ? 'bg-gray-600 border-gray-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
-                    }`}
-                  >
-                    None
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, '16:30')}
-                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
-                      guest.busTime === '16:30'
-                        ? 'bg-blue-600 border-blue-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400'
-                    }`}
-                  >
-                    16:30
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, '17:00')}
-                    className={`flex-1 py-2 px-3 border-2 transition-colors text-sm ${
-                      guest.busTime === '17:00'
-                        ? 'bg-blue-600 border-blue-600 text-white'
-                        : 'bg-white border-gray-300 text-gray-700 hover:border-blue-400'
-                    }`}
-                  >
-                    17:00
-                  </button>
+                <div className="bg-gray-100 p-2">
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, 'none')}
+                      className={`flex-1 py-2 px-3 transition-colors text-sm shadow ${
+                        guest.busTime === 'none'
+                          ? 'bg-gray-400 text-white'
+                          : 'bg-white text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      None
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, '16:30')}
+                      className={`flex-1 py-2 px-3 transition-colors text-sm shadow ${
+                        guest.busTime === '16:30'
+                          ? 'bg-gray-400 text-white'
+                          : 'bg-white text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      16:30
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, '17:00')}
+                      className={`flex-1 py-2 px-3 transition-colors text-sm shadow ${
+                        guest.busTime === '17:00'
+                          ? 'bg-gray-400 text-white'
+                          : 'bg-white text-gray-700 hover:bg-gray-50'
+                      }`}
+                    >
+                      17:00
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
           </div>
         ))}
 
-        <div className="flex gap-2 pt-4 pb-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 bg-gray-600 text-white py-2 px-4 border-2 border-gray-600 hover:bg-gray-700 transition-colors text-sm"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="flex-1 bg-green-600 text-white py-2 px-4 border-2 border-green-600 hover:bg-green-700 transition-colors text-sm"
-          >
-            Submit
-          </button>
+        <div className="bg-gray-100 p-2">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 bg-white text-gray-700 py-2 px-4 hover:bg-gray-50 transition-colors text-sm shadow"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-2 px-4 hover:bg-blue-700 transition-colors text-sm shadow"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </div>
