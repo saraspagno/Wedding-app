@@ -111,14 +111,14 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
         </button>
         <div>
           <h1 className="text-2xl font-bold">Dear {guestGroup.groupInvite},</h1>
-          <p className="text-lg text-gray-600 mt-1">Will you attend?</p>
+          <p className="text-lg text-gray-600 mt-1">Will you attend Sara & Gavriel wedding?</p>
         </div>
       </div>
       {error && <div className="text-red-500 mb-4">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-8 flex-1 overflow-y-auto">
         {formData.map((guest, index) => (
           <div key={index} className="border-b pb-6 last:border-b-0">
-            <h3 className="text-left mb-4 text-base font-normal">{guest.fullName}</h3>
+            <h3 className="text-left mb-4 text-base font-medium">{guest.fullName}</h3>
             
             {/* Coming/Not Coming Selection */}
             <div className="mb-4">
