@@ -115,49 +115,59 @@ function runCommonAnimation(
   invitation: HTMLImageElement,
   finalTransform: string,
   finalTop: string,
-  finalLeft: string
+  finalLeft: string,
+  startDelay: number = 1500
 ) {
+  let time = startDelay;
+
   setTimeout(() => {
     envelope!.style.transform = 'rotateY(180deg)';
-  }, 1000);
+  }, time);
 
+  time += 3000;
   setTimeout(() => {
     lid!.style.transform = 'rotateX(-160deg)';
     invitation!.style.opacity = '1';
-  }, 4000);
+  }, time);
 
+  time += 600;
   setTimeout(() => {
     lid!.src = lidOpen;
-  }, 4600);
+  }, time);
 
+  time += 200;
   setTimeout(() => {
     lid!.style.zIndex = '2';
-  }, 4800);
+  }, time);
 
+  time += 1200;
   setTimeout(() => {
     invitation!.style.top = '-55%';
     invitation!.style.transform = 'rotateZ(-90deg) scale(1)';
     invitation!.style.zIndex = '3';
-  }, 6000);
+  }, time);
 
+  time += 1300;
   setTimeout(() => {
     invitation!.style.zIndex = '5';
     invitation!.style.transform = 'rotateZ(0deg) scale(1.3)';
     invitation!.style.top = '25%';
     invitation!.style.left = '50%';
-  }, 7300);
+  }, time);
 
+  time += 1700;
   setTimeout(() => {
     invitation!.style.transform = finalTransform;
     invitation!.style.top = finalTop;
     invitation!.style.left = finalLeft;
-  }, 9000);
+  }, time);
 
+  time += 1500;
   setTimeout(() => {
     window.scrollBy({
       top: window.innerHeight / 3,
       left: 0,
       behavior: 'smooth'
     });
-  }, 11500);
+  }, time);
 }

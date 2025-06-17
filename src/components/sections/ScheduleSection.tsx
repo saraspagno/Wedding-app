@@ -26,10 +26,10 @@ const ScheduleSection: React.FC = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-playfair text-4xl text-white mb-12 relative z-10 pt-16">Our Day</h2>
+        <h2 className="font-regular text-4xl text-white mb-12 relative z-10 pt-16">Our Day</h2>
 
         {/* Column Layout */}
-        <div className="font-playfair container mx-auto relative z-10">
+        <div className="font-regular container mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
 
             {/* Rome Image */}
@@ -41,60 +41,44 @@ const ScheduleSection: React.FC = () => {
               />
             </div>
 
-            {/* Left Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
+            {/* Shuttles */}
+            <div className="flex flex-col items-center text-center text-base p-6">
               <div className="w-20 h-20 mb-4">
-                <img
-                  src={shuttle}
-                  alt="Shuttle Icon"
-                  className="w-full h-full object-contain"
-                />
+                <img src={shuttle} alt="Shuttle Icon" className="w-full h-full object-contain" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Transportation</h3>
-              <p className="text-white/90">
-                Available from and to Hilton, Tel-Aviv.
-                <br />
-                Leaving at 16:30.
-                <br />
-                Returning at 00:00, 00:30 and 1:30.
-              </p>
+              <h3 className="text-xl font-semibold mb-2 text-white tracking-wide">SHUTTLES</h3>
+              <ul className="text-white font-medium space-y-1">
+                <li>From and to <a href="https://maps.app.goo.gl/kdoVxGmJQtbLiUe27" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200"><strong>Hilton, Tel-Aviv</strong></a></li>
+                <li><strong>Departs:</strong> <span className="text-lg font-semibold">16:30</span></li>
+                <li><strong>Returns:</strong> <span className="text-lg font-semibold">00:30, 01:30</span></li>
+              </ul>
             </div>
 
-            {/* Center Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
+            {/* Reception */}
+            <div className="flex flex-col items-center text-center text-base p-6">
               <div className="w-20 h-20 mb-4">
-                <img
-                  src={cheers}
-                  alt="Cheers Icon"
-                  className="w-full h-full object-contain"
-                />
+                <img src={cheers} alt="Cheers Icon" className="w-full h-full object-contain" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Reception</h3>
-              <p className="text-white/90">
-                Celebrate with us at our reception!
-                <br />
-                Kedma, Neve Ilan.
-                <br />
-                Starting at 18:00.
-              </p>
+              <h3 className="text-xl font-semibold mb-2 text-white tracking-wide">RECEPTION</h3>
+              <ul className="text-white font-medium space-y-1">
+                <li>Venue <a href="https://maps.app.goo.gl/iiBAHSEuLnpYvqQQA" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200"><strong>Gioia Mia</strong></a></li>
+                <li>Nahshonim</li>
+                <li><strong>Starts:</strong> <span className="text-lg font-semibold">18:00</span></li>
+              </ul>
             </div>
 
-            {/* Right Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
+            {/* Chuppà */}
+            <div className="flex flex-col items-center text-center text-base p-6">
               <div className="w-20 h-20 mb-4">
-                <img
-                  src={huppa}
-                  alt="Huppa Icon"
-                  className="w-full h-full object-contain"
-                />
+                <img src={huppa} alt="Chuppà Icon" className="w-full h-full object-contain" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Ceremony</h3>
-              <p className="text-white/90">
-                Join us for our ceremony under the huppa.
-                <br />
-                Starting at 19:00.
-              </p>
+              <h3 className="text-xl font-semibold mb-2 text-white tracking-wide">CHUPPÀ</h3>
+              <ul className="text-white font-medium space-y-1">
+                <li>Under the chuppà</li>
+                <li><strong>Starts:</strong> <span className="text-lg font-semibold">19:00</span></li>
+              </ul>
             </div>
+
 
             {/* Party Image */}
             <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[3deg]">

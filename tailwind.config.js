@@ -11,6 +11,8 @@ module.exports = {
         accent: '#3498db',
       },
       fontFamily: {
+        cursive: ['Great Vibes', 'regular'],
+        regular: ['Playfair Display', 'serif'],
         playfair: ['Playfair Display', 'serif'],
         body: ['Open Sans', 'sans-serif'],
       },

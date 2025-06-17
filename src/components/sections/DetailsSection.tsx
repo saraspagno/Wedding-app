@@ -1,6 +1,5 @@
 import React from 'react';
 import Countdown from '../Countdown';
-import background from '../../assets/background1.jpeg';
 
 const DetailsSection: React.FC = () => {
   // You can easily change this date and time
@@ -10,19 +9,21 @@ const DetailsSection: React.FC = () => {
     <section id="details" className="w-full flex items-center justify-center py-8">
       <div className="max-w-4xl px-4">
         <div className="text-center space-y-4">
-          <h1 className="font-playfair font-light text-5xl md:text-6xl tracking-wide">
+          <h1 className="font-regular font-light text-5xl md:text-6xl tracking-wide">
             Sara & Gavriel
           </h1>
-          <h2 className="font-playfair italic font-light text-3xl md:text-4xl tracking-wide">
+          <h2 className="font-cursive italic font-light text-4xl md:text-5xl tracking-wider leading-relaxed">
             the wedding
           </h2>
-          <p className="font-playfair text-2xl md:text-3xl tracking-wide">
-            Thursday, June 11, 2026
+          <p className="font-regular text-2xl md:text-3xl tracking-wide">
+            Thursday, May 28, 2026
           </p>
-          <p className="font-playfair text-2xl md:text-3xl tracking-wide">
+          <p className="font-regular text-2xl md:text-3xl tracking-wide">
             ISRAEL
           </p>
-          <Countdown targetDate={weddingDate} />
+          <div>
+            <Countdown targetDate={weddingDate} />
+          </div>
         </div>
       </div>
     </section>
