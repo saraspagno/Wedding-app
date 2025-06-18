@@ -135,7 +135,7 @@ function runCommonAnimation(
   finalTransform: string,
   finalTop: string,
   finalLeft: string,
-  startDelay: number = 1500
+  startDelay: number = 1000
 ) {
   let time = startDelay;
 
@@ -174,14 +174,14 @@ function runCommonAnimation(
     invitation!.style.left = '50%';
   }, time);
 
-  time += 1700;
+  time += 2000;
   setTimeout(() => {
     invitation!.style.transform = finalTransform;
     invitation!.style.top = finalTop;
     invitation!.style.left = finalLeft;
   }, time);
 
-  time += 1500;
+  time += 3000;
   setTimeout(() => {
     window.scrollBy({
       top: window.innerHeight / 3,
