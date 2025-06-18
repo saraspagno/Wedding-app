@@ -24,11 +24,13 @@ const GiftSection: React.FC = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-playfair text-4xl text-white mb-12 relative z-10 pt-16">Gift Registry</h2>
+        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16">
+          Gifting options
+        </h2>
 
         {/* Column Layout */}
         <div className="font-playfair container mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* First Polaroid Image */}
             <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[-3deg]">
               <img
@@ -38,49 +40,42 @@ const GiftSection: React.FC = () => {
               />
             </div>
 
-            {/* First Gift Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
-              <div className="w-20 h-20 mb-4">
-                <img
-                  src={gift1}
-                  alt="Revolut Icon"
-                  className="w-full h-full object-contain"
-                />
+            {/* Gift List Column */}
+            <div className="flex flex-col items-center text-center p-6 text-lg">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 w-full max-w-md">
+                <ul className="space-y-4 text-left">
+                  <li className="flex items-center space-x-4 text-white">
+                    <div className="w-8 h-8 flex-shrink-0">
+                      <img
+                        src={gift1}
+                        alt="Revolut Icon"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span> Credit Card </span>
+                    <a href='https://revolut.me/sarahlrij' target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300">https://revolut.me/sarahlrij</a>
+                  </li>
+                  <li className="flex items-center space-x-4 text-white">
+                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                      <span className="text-lg font-bold text-transparent" style={{
+                        WebkitTextStroke: '1px white',
+                      }}>ILS</span>
+                    </div>
+                    <span className="text-lg">Israeli Shekel</span>
+                  </li>
+                  <li className="flex items-center space-x-4 text-white">
+                    <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center">
+                      <span className="text-lg font-bold text-transparent" style={{
+                        WebkitTextStroke: '1px white',
+                      }}>EUR</span>
+                    </div>
+                    <span className="text-lg">Euro</span>
+                  </li>
+                </ul>
+                <p className="text-white/70 text-sm mt-6 italic">
+                  Coming soon...
+                </p>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Revolut</h3>
-              <p className="text-white/90">
-                Coming soon...
-              </p>
-            </div>
-
-            {/* Second Gift Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
-              <div className="w-20 h-20 mb-4 flex items-center justify-center">
-                <div className="relative">
-                  <span className="text-4xl font-bold text-transparent" style={{
-                    WebkitTextStroke: '2px white',
-                  }}>ILS</span>
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Israeli Shekel</h3>
-              <p className="text-white/90">
-                Coming soon...
-              </p>
-            </div>
-
-            {/* Third Gift Column */}
-            <div className="flex flex-col items-center text-center text-[0.9rem] p-6">
-              <div className="w-20 h-20 mb-4 flex items-center justify-center">
-                <div className="relative">
-                  <span className="text-4xl font-bold text-transparent" style={{
-                    WebkitTextStroke: '2px white',
-                  }}>EUR</span>
-                </div>
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">Euro</h3>
-              <p className="text-white/90">
-                Coming soon...
-              </p>
             </div>
 
             {/* Second Polaroid Image */}
