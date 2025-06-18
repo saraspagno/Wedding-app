@@ -133,8 +133,8 @@ const Home: React.FC = () => {
 
         {/* RSVP Modal */}
         {showRSVPModal && guestGroup && (
-          <div className="shadow-lg fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
-            <div className="bg-white p-6 w-full mx-2 mt-14 max-w-md max-h-[500px] sm:max-h-[650px] overflow-y-auto flex flex-col">
+          <div className="shadow-lg fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-20 pt-16">
+            <div className="bg-white p-6 w-full mx-2 max-w-md max-h-[calc(100vh-8rem)] overflow-y-auto flex flex-col rounded-lg mt-4">
               <RSVPForm
                 guestGroup={guestGroup}
                 onRSVPComplete={handleRSVPComplete}

@@ -20,6 +20,7 @@ const ScheduleSection: React.FC = () => {
         >
           <img
             src={background}
+            alt="Background decoration"
             className="w-full object-top"
             style={{ height: '100%', maxHeight: '100%', minHeight: '100%' }}
           />

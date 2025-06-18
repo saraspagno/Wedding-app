@@ -103,11 +103,11 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
       <div className="relative mb-6">
         <button
           onClick={onClose}
-          className="absolute top-0 right-0 text-amber-950 hover:text-amber-700 text-xl"
+          className="absolute top-0 right-0 text-amber-950 hover:text-amber-700 text-xl mb-4"
         >
           ✕
         </button>
-        <div>
+        <div className="pt-8">
           <h1 className="font-cursive text-3xl text-amber-950">Dear {guestGroup.groupInvite},</h1>
           <p className="text-xl md:text-3xl tracking-wide text-amber-950 mt-2">Will you attend Sara and Gavriel's wedding?</p>
         </div>
