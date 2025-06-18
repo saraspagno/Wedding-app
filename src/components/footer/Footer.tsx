@@ -15,24 +15,24 @@ const Footer: React.FC = () => {
         <div className="font-playfair grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Contact Information */}
           <div>
-            <h3 className="text-xl font-semibold mb-4">Contacts</h3>
-            <ul className="space-y-2">
+            <h2 className="font-cursive text-4xl font-bold mb-4 text-amber-950">Contacts</h2>
+            <ul className="space-y-2 text-lg font-regular text-amber-950">
               <li>
-                <span className="font-medium">Sara:</span>
-                <a href="tel:+1234567890" className="hover:text-gray-400 transition-colors ml-2">
+                <span>Sara:</span>
+                <a href="tel:+1234567890" className="underline hover:no-underline text-amber-950 ml-2">
                   +1 (234) 567-890
                 </a>
               </li>
               <li>
-                <span className="font-medium">Email:</span>
-                <a href="mailto:saraspagno@gmail.com" className="hover:text-gray-400 transition-colors ml-2">
-                  saraspagno@gmail.com
+                <span>Gavriel:</span>
+                <a href="tel:+1234567891" className="underline hover:no-underline text-amber-950 ml-2">
+                  +1 (234) 567-891
                 </a>
               </li>
               <li>
-                <span className="font-medium">Gavriel:</span>
-                <a href="tel:+1234567891" className="hover:text-gray-400 transition-colors ml-2">
-                  +1 (234) 567-891
+                <span>Email:</span>
+                <a href="mailto:saraspagno@gmail.com" className="underline hover:no-underline text-amber-950 ml-2">
+                  saraspagno@gmail.com
                 </a>
               </li>
             </ul>
@@ -40,15 +40,15 @@ const Footer: React.FC = () => {
 
           {/* Celebration Message */}
           <div className="flex items-center justify-center">
-            <p className="text-xl text-center">
+            <p className="text-xl text-center font-bold text-amber-950">
               We can't wait to celebrate with you!
             </p>
           </div>
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-gray-800 mt-8 pt-6 text-center">
-          <p>
+        <div className="border-t border-amber-800 mt-8 pt-6 text-center">
+          <p className="text-amber-950">
             © {new Date().getFullYear()} All Rights Reserved | Developed by Sara Spagnoletto
           </p>
         </div>
