@@ -9,9 +9,10 @@ import lidOpen from '../assets/animation/lid_open.png';
 interface EnvelopeAnimationProps {
   guestName: string;
   onReady?: () => void;
+  loadingComplete?: boolean;
 }
 
-const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onReady }) => {
+const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onReady, loadingComplete = false }) => {
   const [imageReady, setImageReady] = React.useState(false);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -46,7 +47,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onRead
       setImageReady(true);
       onReady?.();
 
-      if (!hasRunAnimationRef.current) {
+      if (!hasRunAnimationRef.current && loadingComplete) {
         hasRunAnimationRef.current = true;
         if (isPhone) {
           runCommonAnimation(envelope, lid, invitation, 'rotateZ(0deg) scale(1.6)', '38%', '50%');
@@ -62,8 +63,26 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onRead
     return () => {
       baseImage.onload = null;
     };
-  }, [guestName, onReady]);
+  }, [guestName, onReady, loadingComplete]);
 
+  // Handle case where image is ready but loadingComplete becomes true later
+  useEffect(() => {
+    if (imageReady && loadingComplete && !hasRunAnimationRef.current) {
+      const isPhone = window.innerWidth <= 768;
+      const envelope = envelopeRef.current;
+      const lid = lidRef.current;
+      const invitation = invitationRef.current;
+
+      if (!envelope || !lid || !invitation) return;
+
+      hasRunAnimationRef.current = true;
+      if (isPhone) {
+        runCommonAnimation(envelope, lid, invitation, 'rotateZ(0deg) scale(1.6)', '38%', '50%');
+      } else {
+        runCommonAnimation(envelope, lid, invitation, 'rotateZ(0deg) scale(1.3)', '25%', '100%');
+      }
+    }
+  }, [imageReady, loadingComplete]);
 
   useEffect(() => {
     const envelope = envelopeRef.current;

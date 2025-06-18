@@ -12,6 +12,7 @@ import ShabbatSection from '../components/sections/ShabbatSection';
 import { GuestGroup } from '../types/interfaces';
 import '../style/animation.css';
 import background from '../assets/background1.jpeg';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const Home: React.FC = () => {
   const [authReady, setAuthReady] = useState(false);
@@ -85,11 +86,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Fullscreen Loading Overlay */}
-      {(loading || !authReady || !animationReady) && (
-        <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
-          <div className="text-xl font-semibold">Loading...</div>
-        </div>
-      )}
+      {(loading || !authReady || !animationReady) && <LoadingOverlay />}
 
       <main className="relative">
         <section
@@ -100,7 +97,11 @@ const Home: React.FC = () => {
             backgroundPosition: 'center',
           }}
         >
-          <EnvelopeAnimation guestName={guestGroup?.groupInvite ?? ''} onReady={() => setAnimationReady(true)}/>
+          <EnvelopeAnimation 
+            guestName={guestGroup?.groupInvite ?? ''} 
+            onReady={() => setAnimationReady(true)}
+            loadingComplete={!loading && authReady && animationReady}
+          />
 
           <button
             onClick={handleRSVPClick}
