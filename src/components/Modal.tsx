@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 import { GuestGroup, ModalState } from '../types/interfaces';
 import { BusIcon, HeartCrackIcon, PartyIcon } from './icons';
+import confetti from 'canvas-confetti';
 
 interface ModalProps {
     modalState: ModalState;
@@ -37,10 +38,10 @@ const GuestList: React.FC<{ guestGroup: GuestGroup }> = ({ guestGroup }) => (
                             }`}>
                             {guest.coming ? 'Coming' : 'Not Coming'}
                         </span>
-                        {guest.coming && guest.busTime !== 'none' && (
+                        {guest.coming && (
                             <div className="flex items-center gap-1 text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-full border border-gray-200 shadow-sm">
                                 <BusIcon className="text-gray-600" size="sm" />
-                                {guest.busTime}
+                                {guest.busTime === 'none' ? 'No' : guest.busTime}
                             </div>
                         )}
                     </div>
@@ -57,6 +58,21 @@ const Modal: React.FC<ModalProps> = ({
     onClose,
     onRSVPComplete
 }) => {
+    // Trigger confetti when Thank You modal is shown
+    useEffect(() => {
+        if (modalState === ModalState.THANK_YOU && guestGroup) {
+            const atLeastOneComing = guestGroup.guests.some(guest => guest.coming);
+            if (atLeastOneComing) {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#DDA0DD']
+                });
+            }
+        }
+    }, [modalState, guestGroup]);
+
     const renderModalContent = () => {
         switch (modalState) {
             case ModalState.ERROR:
