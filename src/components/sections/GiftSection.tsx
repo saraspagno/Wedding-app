@@ -11,7 +11,7 @@ const GiftSection: React.FC = () => {
       className="w-full flex flex-col items-center justify-center relative"
     >
       {/* Details Section */}
-      <div className="w-full relative pb-32">
+      <div className="w-full relative pb-16">
         <div
           className="absolute top-0 left-0 w-full h-full flex justify-center pointer-events-none"
           style={{ zIndex: 0 }}
@@ -25,7 +25,7 @@ const GiftSection: React.FC = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16">
+        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16 tracking-wide">
           Gifting options
         </h2>
 
@@ -37,7 +37,7 @@ const GiftSection: React.FC = () => {
               <img
                 src={sunset}
                 alt="Sunset"
-                className="w-80 h-auto"
+                className="w-60 h-auto"
               />
             </div>
 
@@ -54,7 +54,7 @@ const GiftSection: React.FC = () => {
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <span>Credit Card</span>
+                      <span>CREDIT CARD</span>
                     </div>
                     <a href='https://revolut.me/sarahlrij' target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300 ml-12">
                       https://revolut.me/sarahlrij
@@ -67,13 +67,14 @@ const GiftSection: React.FC = () => {
                           WebkitTextStroke: '1px white',
                         }}>ILS</span>
                       </div>
-                      <span>Israeli Bank Account</span>
+                      <span>BANK TRASNFER</span>
                     </div>
                     <div className="ml-12 space-y-1 text-sm">
                       <div><span className="text-gray-300">Name:</span> Sara Example</div>
                       <div><span className="text-gray-300">Bank:</span> Bank Hapoalim, 02</div>
                       <div><span className="text-gray-300">Account Number:</span> 123456</div>
                       <div><span className="text-gray-300">Branch:</span> 1234</div>
+                      <div><span className="text-gray-300">BIT:</span> 0542119146</div>
                     </div>
                   </li>
                   <li className="flex flex-col space-y-2 text-white">
@@ -83,7 +84,7 @@ const GiftSection: React.FC = () => {
                           WebkitTextStroke: '1px white',
                         }}>EUR</span>
                       </div>
-                      <span>European Bank Account</span>
+                      <span>BANK TRASNFER</span>
                     </div>
                     <div className="ml-12 text-sm">
                       <div><span className="text-gray-300">Name:</span> Sara Spagnoletto</div>
@@ -99,7 +100,7 @@ const GiftSection: React.FC = () => {
               <img
                 src={polaroid2}
                 alt="Gift Polaroid 2"
-                className="w-80 h-auto"
+                className="w-60 h-auto"
               />
             </div>
           </div>

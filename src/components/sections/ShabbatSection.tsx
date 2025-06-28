@@ -25,7 +25,7 @@ const ShabbatSection: React.FC = () => {
 
       {/* Content */}
       <div className="w-full max-w-2xl mx-auto flex flex-col items-center text-center font-regular mt-24 mb-24 text-lg">
-        <h1 className="font-cursive text-4xl font-bold mb-8">Shabbat Chatan</h1>
+        <h1 className="font-cursive text-4xl font-bold mb-8 tracking-wide">Shabbat Chatan</h1>
         <div className="space-y-4">
           <p className="font-bold">Please join us for a</p>
           <p className="font-bold">SATURDAY KIDDUSH</p>

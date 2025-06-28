@@ -39,9 +39,9 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Celebration Message */}
-          <div className="flex items-center justify-center">
-            <p className="text-xl text-center font-bold text-amber-950">
-              We can't wait to celebrate with you!
+          <div className="font-cursive flex items-center justify-center">
+            <p className="text-4xl text-center tracking-wide text-amber-950">
+              we can't wait to celebrate with you!
             </p>
           </div>
         </div>

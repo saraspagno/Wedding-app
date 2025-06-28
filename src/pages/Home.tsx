@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { db } from '../types/firebase';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
 import RSVPForm from '../components/RSVPForm';
@@ -25,14 +25,26 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const auth = getAuth();
-    signInAnonymously(auth)
-      .then(() => {
+    
+    // Check if there's already a user (authenticated or anonymous)
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is already signed in (either authenticated or anonymous)
         setAuthReady(true);
-      })
-      .catch((error) => {
-        console.error('Anonymous sign-in failed', error);
-        setError('Could not authenticate with server. Please try again.');
-      });
+      } else {
+        // No user, sign in anonymously
+        signInAnonymously(auth)
+          .then(() => {
+            setAuthReady(true);
+          })
+          .catch((error) => {
+            console.error('Anonymous sign-in failed', error);
+            setError('Could not authenticate with server. Please try again.');
+          });
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -105,7 +117,7 @@ const Home: React.FC = () => {
 
           <button
             onClick={handleRSVPClick}
-            className="mt-[40px] md:mt-0 text-[#4a3626] border-[2px] border-[#4a3626] font-medium overflow-hidden px-20 py-2 rounded-none hover:bg-[#4a3626] hover:text-[#f5f0e6] active:opacity-75 outline-none duration-300 bg-transparent text-lg tracking-wide uppercase font-sans"
+            className="mt-[40px] md:mt-0 text-[#4a3626] border-[2px] border-[#4a3626] font-medium overflow-hidden px-20 py-2 rounded-none hover:bg-[#4a3626] hover:text-[#f5f0e6] active:opacity-75 outline-none duration-300 bg-transparent text-lg tracking-wide uppercase font-sans shadow-lg"
           >
             RSVP
           </button>

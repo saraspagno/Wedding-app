@@ -27,7 +27,7 @@ const ScheduleSection: React.FC = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16">Our day</h2>
+        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16 tracking-wide">Our day</h2>
 
         {/* Column Layout */}
         <div className="font-regular container mx-auto relative z-10">
