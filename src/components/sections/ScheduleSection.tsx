@@ -5,6 +5,7 @@ import cheers from '../../assets/schedule/cheers.png';
 import huppa from '../../assets/schedule/huppa.png';
 import rome from '../../assets/us/rome_polaroid.png';
 import party from '../../assets/us/party_polaroid.png';
+import { ClockIcon, LocationIcon } from '../icons';
 
 const ScheduleSection: React.FC = () => {
   return (
@@ -51,15 +52,11 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-white font-semibold space-y-1 text-lg">
                 <li>From and to <a href="https://maps.app.goo.gl/kdoVxGmJQtbLiUe27" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300">Hilton, Tel-Aviv</a></li>
                 <li className="flex items-center justify-center gap-1">
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <ClockIcon className="text-gray-300" size="sm" />
                   <strong>Departs:</strong> <span className="text-xl font-bold">16:30</span>
                 </li>
                 <li className="flex items-center justify-center gap-1">
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <ClockIcon className="text-gray-300" size="sm" />
                   <strong>Returns:</strong> <span className="text-xl font-bold">00:30, 01:30</span>
                 </li>
               </ul>
@@ -74,15 +71,11 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-white font-semibold space-y-1 text-lg">
                 <li>Venue <a href="https://maps.app.goo.gl/iiBAHSEuLnpYvqQQA" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300">Gioia Mia</a></li>
                 <li className="flex items-center justify-center gap-1">
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
+                  <LocationIcon className="text-gray-300" size="sm" />
                   Nahshonim
                 </li>
                 <li className="flex items-center justify-center gap-1">
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <ClockIcon className="text-gray-300" size="sm" />
                   <strong>Starts:</strong> <span className="text-xl font-bold">18:00</span>
                 </li>
               </ul>
@@ -97,9 +90,7 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-white font-semibold space-y-1 text-lg">
                 <li>Under the chuppà</li>
                 <li className="flex items-center justify-center gap-1">
-                  <svg className="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <ClockIcon className="text-gray-300" size="sm" />
                   <strong>Starts:</strong> <span className="text-xl font-bold">19:00</span>
                 </li>
               </ul>

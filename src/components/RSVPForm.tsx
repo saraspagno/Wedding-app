@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../types/firebase';
 import { Guest, GuestGroup, BusTime } from '../types/interfaces';
+import { BusIcon } from './icons';
 
 interface RSVPFormProps {
   guestGroup: GuestGroup;
@@ -18,7 +19,6 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
       busTime: guest.busTime || 'none'
     }))
   );
-  const [localGroup, setLocalGroup] = useState<GuestGroup | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +46,6 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
       };
 
       onRSVPComplete(updatedGroup);
-      setLocalGroup(updatedGroup);
       setError(null);
     } catch (err) {
       setError('Error updating RSVP');
@@ -66,151 +65,119 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
     ));
   };
 
-  const groupToShow = localGroup || guestGroup;
-  const allGuestsResponded = groupToShow.guests.every(guest => guest.coming !== undefined);
-
-  if (allGuestsResponded) {
-    const atLeastOneComing = groupToShow.guests.some(guest => guest.coming);
-    
-    return (
-      <div className="flex flex-col sm:mx-0 font-bold font-sans tracking-wide">
-        <div className="relative mb-6">
-          <div>
-            <p className="font-cursive font-light text-3xl text-amber-950">
-              {atLeastOneComing 
-                ? "we look forward to celebrating with you" 
-                : "we are sorry you can't make it"
-              }
-            </p>
-          </div>
-        </div>
-
-        <div className="mb-6">
-          <ul className="space-y-2 text-amber-950">
-            {groupToShow.guests.map((guest, index) => (
-              <li key={index} className="text-left">
-                {guest.fullName}: {guest.coming ? 'Coming' : 'Not Coming'}
-                {guest.coming && guest.busTime !== 'none' && ` (Bus at ${guest.busTime})`}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex gap-2 pt-4">
-          <button
-            onClick={onClose}
-            className="flex-1 bg-amber-950 text-white py-2 px-4 hover:bg-amber-800 transition-colors text-sm shadow-lg"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col sm:mx-0">
       <div className="relative mb-6">
         <button
           onClick={onClose}
-          className="absolute top-0 right-0 text-amber-950 hover:text-amber-700 text-xl mb-4"
+          className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 text-xl mb-4"
         >
           ✕
         </button>
         <div className="pt-8">
-          <h1 className="font-cursive font-medium text-3xl text-amber-950 tracking-wide">Dear {guestGroup.groupInvite},</h1>
-          <p className="text-xl tracking-wide text-amber-950 mt-2">Will you attend Sara and Gavriel's wedding?</p>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Dear {guestGroup.groupInvite},</h1>
+          <p className="text-lg text-gray-600">Will you attend Sara and Gavriel's wedding?</p>
         </div>
       </div>
-      {error && <div className="text-red-500 mb-4 font-regular">{error}</div>}
-      <form onSubmit={handleSubmit} className="space-y-8 flex-1 overflow-y-auto">
+      
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+          {error}
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit} className="space-y-4 flex-1 overflow-y-auto">
         {formData.map((guest, index) => (
-          <div key={index} className="border-b border-amber-200 pb-6 last:border-b-0">
-            <h3 className="font-sans text-left mb-4 text-lg tracking-wide text-amber-950">{guest.fullName}</h3>
-            
-            {/* Coming/Not Coming Selection */}
-            <div className="mb-4">
-              <div className="flex gap-2">
+          <div key={index} className="bg-gray-50 p-4 border border-gray-200">
+            <div className="grid grid-cols-1 gap-2">
+              <div className="text-left">
+                <span className="font-medium text-gray-900">{guest.fullName}</span>
+              </div>
+              
+              <div className="flex items-center gap-2 justify-end">
                 <button
                   type="button"
                   onClick={() => updateGuestStatus(index, true)}
-                  className={`flex-1 py-2 px-3 transition-colors text-sm font-medium overflow-hidden rounded-none outline-none duration-300 font-sans tracking-wide uppercase shadow-lg ${
+                  className={`px-3 py-1 rounded-full text-sm font-medium border ${
                     guest.coming === true
-                      ? 'bg-amber-950 text-white border-2 border-amber-950'
-                      : 'bg-transparent text-amber-950 border-2 border-amber-950 hover:bg-amber-950 hover:text-white'
+                      ? 'bg-green-100 text-green-800 border-green-200'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-green-50'
                   }`}
                 >
-                  Attending
+                  Coming
                 </button>
                 <button
                   type="button"
                   onClick={() => updateGuestStatus(index, false)}
-                  className={`flex-1 py-2 px-3 transition-colors text-sm font-medium overflow-hidden rounded-none outline-none duration-300 font-sans tracking-wide uppercase shadow-lg ${
+                  className={`px-3 py-1 rounded-full text-sm font-medium border ${
                     guest.coming === false
-                      ? 'bg-amber-950 text-white border-2 border-amber-950'
-                      : 'bg-transparent text-amber-950 border-2 border-amber-950 hover:bg-amber-950 hover:text-white'
+                      ? 'bg-red-100 text-red-800 border-red-200'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50'
                   }`}
                 >
-                  Not Attending
+                  Not Coming
                 </button>
               </div>
-            </div>
 
-            {/* Bus Selection - only show if coming */}
-            {guest.coming && (
-              <div>
-                <h4 className="text-left tracking-wide mb-3 text-amber-950 text-sm">Shuttle from Tel-Aviv to venue?</h4>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, 'none')}
-                    className={`flex-1 py-2 px-3 transition-colors text-sm font-medium overflow-hidden rounded-none outline-none duration-300 font-sans tracking-wide uppercase shadow-lg ${
-                      guest.busTime === 'none'
-                        ? 'bg-amber-950 text-white border-2 border-amber-950'
-                        : 'bg-transparent text-amber-950 border-2 border-amber-950 hover:bg-amber-950 hover:text-white'
-                    }`}
-                  >
-                    None
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, '16:30')}
-                    className={`flex-1 py-2 px-3 transition-colors text-sm font-medium overflow-hidden rounded-none outline-none duration-300 font-sans tracking-wide uppercase shadow-lg ${
-                      guest.busTime === '16:30'
-                        ? 'bg-amber-950 text-white border-2 border-amber-950'
-                        : 'bg-transparent text-amber-950 border-2 border-amber-950 hover:bg-amber-950 hover:text-white'
-                    }`}
-                  >
-                    16:30
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateBusTime(index, '17:00')}
-                    className={`flex-1 py-2 px-3 transition-colors text-sm font-medium overflow-hidden rounded-none outline-none duration-300 font-sans tracking-wide uppercase shadow-lg ${
-                      guest.busTime === '17:00'
-                        ? 'bg-amber-950 text-white border-2 border-amber-950'
-                        : 'bg-transparent text-amber-950 border-2 border-amber-950 hover:bg-amber-950 hover:text-white'
-                    }`}
-                  >
-                    17:00
-                  </button>
+              {/* Bus Selection - only show if coming */}
+              {guest.coming && (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm text-gray-600">Shuttle</span>
+                    <BusIcon className="text-gray-600" size="sm" />
+                  </div>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, 'none')}
+                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                        guest.busTime === 'none'
+                          ? 'bg-blue-100 text-blue-800 border-blue-200'
+                          : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      None
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, '16:30')}
+                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                        guest.busTime === '16:30'
+                          ? 'bg-blue-100 text-blue-800 border-blue-200'
+                          : 'bg-white text-gray-600 border-gray-300 hover:bg-blue-50'
+                      }`}
+                    >
+                      16:30
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateBusTime(index, '17:00')}
+                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                        guest.busTime === '17:00'
+                          ? 'bg-blue-100 text-blue-800 border-blue-200'
+                          : 'bg-white text-gray-600 border-gray-300 hover:bg-blue-50'
+                      }`}
+                    >
+                      17:00
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ))}
 
-        <div className="flex gap-2">
+        <div className="flex gap-3 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-transparent text-amber-950 border-2 border-amber-950 font-medium overflow-hidden px-4 py-2 rounded-none hover:bg-amber-950 hover:text-white active:opacity-75 outline-none duration-300 text-sm tracking-wide uppercase font-sans shadow-lg"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 font-medium py-3 px-4 rounded hover:bg-gray-50"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="flex-1 bg-amber-950 text-white border-2 border-amber-950 font-medium overflow-hidden px-4 py-2 rounded-none hover:bg-amber-800 active:opacity-75 outline-none duration-300 text-sm tracking-wide uppercase font-sans shadow-lg"
+            className="flex-1 bg-blue-600 text-white border border-blue-600 font-medium py-3 px-4 rounded hover:bg-blue-700"
           >
             Submit
           </button>

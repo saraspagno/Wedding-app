@@ -4,12 +4,12 @@ import { db } from '../types/firebase';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
-import RSVPForm from '../components/RSVPForm';
+import Modal from '../components/Modal';
 import DetailsSection from '../components/sections/DetailsSection';
 import ScheduleSection from '../components/sections/ScheduleSection';
 import GiftSection from '../components/sections/GiftSection';
 import ShabbatSection from '../components/sections/ShabbatSection';
-import { GuestGroup } from '../types/interfaces';
+import { GuestGroup, ModalState } from '../types/interfaces';
 import '../style/animation.css';
 import background from '../assets/background1.jpeg';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -19,27 +19,24 @@ const Home: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [guestGroup, setGuestGroup] = useState<GuestGroup | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [showRSVPModal, setShowRSVPModal] = useState(false);
+  const [error, setError] = useState(false);
+  const [modalState, setModalState] = useState<ModalState>(ModalState.NONE);
   const [animationReady, setAnimationReady] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
-    
-    // Check if there's already a user (authenticated or anonymous)
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is already signed in (either authenticated or anonymous)
         setAuthReady(true);
       } else {
-        // No user, sign in anonymously
         signInAnonymously(auth)
           .then(() => {
             setAuthReady(true);
           })
           .catch((error) => {
-            console.error('Anonymous sign-in failed', error);
-            setError('Could not authenticate with server. Please try again.');
+            console.error('Anonymous sign-in failed:', error);
+            setError(true);
+            setModalState(ModalState.ERROR);
           });
       }
     });
@@ -61,7 +58,9 @@ const Home: React.FC = () => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
-          setError('Invalid RSVP code');
+          console.error('Invalid RSVP code:', rsvpCode);
+          setError(true);
+          setModalState(ModalState.ERROR);
           setLoading(false);
           return;
         }
@@ -70,8 +69,9 @@ const Home: React.FC = () => {
         const groupData = { id: docSnap.id, ...docSnap.data() } as GuestGroup;
         setGuestGroup(groupData);
       } catch (err) {
-        setError('Error fetching guest group information');
-        console.error('Error:', err);
+        console.error('Error fetching guest group information:', err);
+        setError(true);
+        setModalState(ModalState.ERROR);
       } finally {
         setLoading(false);
       }
@@ -82,18 +82,40 @@ const Home: React.FC = () => {
 
   const handleRSVPComplete = (updatedGroup: GuestGroup) => {
     setGuestGroup(updatedGroup);
-    setShowRSVPModal(false);
+    const atLeastOneComing = updatedGroup.guests.some(guest => guest.coming);
+    setModalState(atLeastOneComing ? ModalState.THANK_YOU : ModalState.SORRY);
   };
 
   const handleRSVPClick = () => {
     const rsvpCode = searchParams.get('code');
     if (!rsvpCode) {
-      setError('No RSVP code provided, please re-click on the link sent to you by the host.');
+      console.error('No RSVP code provided in URL');
+      setError(true);
+      setModalState(ModalState.ERROR);
       return;
     }
-    setShowRSVPModal(true);
+
+    if (!guestGroup) {
+      console.error('Guest group information not available');
+      setError(true);
+      setModalState(ModalState.ERROR);
+      return;
+    }
+
+    const allGuestsResponded = guestGroup.guests.every(guest => guest.coming !== undefined);
+    
+    if (allGuestsResponded) {
+      const atLeastOneComing = guestGroup.guests.some(guest => guest.coming);
+      setModalState(atLeastOneComing ? ModalState.THANK_YOU : ModalState.SORRY);
+    } else {
+      setModalState(ModalState.RSVP);
+    }
   };
 
+  const closeModal = () => {
+    setModalState(ModalState.NONE);
+    setError(false);
+  };
 
   return (
     <>
@@ -122,8 +144,6 @@ const Home: React.FC = () => {
             RSVP
           </button>
 
-
-
           <DetailsSection />
         </section>
 
@@ -131,31 +151,14 @@ const Home: React.FC = () => {
         <ShabbatSection />
         <GiftSection />
 
-        {/* Error Message Modal */}
-        {error && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-20 max-w-md">
-            <p className="text-red-600 text-center">{error}</p>
-            <button
-              onClick={() => setError(null)}
-              className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
-            >
-              Close
-            </button>
-          </div>
-        )}
-
-        {/* RSVP Modal */}
-        {showRSVPModal && guestGroup && (
-          <div className="shadow-lg fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-20 pt-16">
-            <div className="bg-white p-6 w-full mx-2 max-w-md max-h-[calc(100vh-8rem)] overflow-y-auto flex flex-col rounded-lg mt-4">
-              <RSVPForm
-                guestGroup={guestGroup}
-                onRSVPComplete={handleRSVPComplete}
-                onClose={() => setShowRSVPModal(false)}
-              />
-            </div>
-          </div>
-        )}
+        {/* Modal Component */}
+        <Modal
+          modalState={modalState}
+          error={error}
+          guestGroup={guestGroup}
+          onClose={closeModal}
+          onRSVPComplete={handleRSVPComplete}
+        />
       </main>
     </>
   );
