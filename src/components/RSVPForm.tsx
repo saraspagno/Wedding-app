@@ -67,38 +67,30 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
 
   return (
     <div className="flex flex-col sm:mx-0">
-      <div className="relative mb-6">
-        <button
-          onClick={onClose}
-          className="absolute top-0 right-0 text-gray-500 hover:text-gray-700 text-xl mb-4"
-        >
-          ✕
-        </button>
-        <div className="pt-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Dear {guestGroup.groupInvite},</h1>
-          <p className="text-lg text-gray-600">Will you attend Sara and Gavriel's wedding?</p>
-        </div>
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-3">Dear {guestGroup.groupInvite},</h1>
+        <p className="text-lg text-gray-600 font-medium"> Please confirm you presence at our wedding!</p>
       </div>
       
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 shadow-sm">
           {error}
         </div>
       )}
       
       <form onSubmit={handleSubmit} className="space-y-4 flex-1 overflow-y-auto">
         {formData.map((guest, index) => (
-          <div key={index} className="bg-gray-50 p-4 border border-gray-200">
+          <div key={index} className="bg-gray-50 p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
             <div className="grid grid-cols-1 gap-2">
               <div className="text-left">
-                <span className="font-medium text-gray-900">{guest.fullName}</span>
+                <span className="font-semibold text-gray-900">{guest.fullName}</span>
               </div>
               
               <div className="flex items-center gap-2 justify-end">
                 <button
                   type="button"
                   onClick={() => updateGuestStatus(index, true)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                  className={`px-3 py-1 rounded-full text-sm font-medium border shadow-sm transition-colors duration-200 ${
                     guest.coming === true
                       ? 'bg-green-100 text-green-800 border-green-200'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-green-50'
@@ -109,7 +101,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
                 <button
                   type="button"
                   onClick={() => updateGuestStatus(index, false)}
-                  className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                  className={`px-3 py-1 rounded-full text-sm font-medium border shadow-sm transition-colors duration-200 ${
                     guest.coming === false
                       ? 'bg-red-100 text-red-800 border-red-200'
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-red-50'
@@ -123,14 +115,14 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
               {guest.coming && (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
-                    <span className="text-sm text-gray-600">Shuttle</span>
+                    <span className="text-sm text-gray-600 font-medium">Shuttle</span>
                     <BusIcon className="text-gray-600" size="sm" />
                   </div>
                   <div className="flex gap-1">
                     <button
                       type="button"
                       onClick={() => updateBusTime(index, 'none')}
-                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                      className={`px-2 py-1 text-xs font-medium rounded-full border shadow-sm transition-colors duration-200 ${
                         guest.busTime === 'none'
                           ? 'bg-blue-100 text-blue-800 border-blue-200'
                           : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
@@ -141,7 +133,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
                     <button
                       type="button"
                       onClick={() => updateBusTime(index, '16:30')}
-                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                      className={`px-2 py-1 text-xs font-medium rounded-full border shadow-sm transition-colors duration-200 ${
                         guest.busTime === '16:30'
                           ? 'bg-blue-100 text-blue-800 border-blue-200'
                           : 'bg-white text-gray-600 border-gray-300 hover:bg-blue-50'
@@ -152,7 +144,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
                     <button
                       type="button"
                       onClick={() => updateBusTime(index, '17:00')}
-                      className={`px-2 py-1 text-xs font-medium rounded-full border ${
+                      className={`px-2 py-1 text-xs font-medium rounded-full border shadow-sm transition-colors duration-200 ${
                         guest.busTime === '17:00'
                           ? 'bg-blue-100 text-blue-800 border-blue-200'
                           : 'bg-white text-gray-600 border-gray-300 hover:bg-blue-50'
@@ -171,13 +163,13 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-white text-gray-700 border border-gray-300 font-medium py-3 px-4 rounded hover:bg-gray-50"
+            className="flex-1 bg-white text-gray-700 border border-gray-300 font-medium py-2 sm:py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 shadow-sm hover:shadow-md"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="flex-1 bg-blue-600 text-white border border-blue-600 font-medium py-3 px-4 rounded hover:bg-blue-700"
+            className="flex-1 bg-blue-600 text-white border border-blue-600 font-medium py-2 sm:py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-sm hover:shadow-md"
           >
             Submit
           </button>
