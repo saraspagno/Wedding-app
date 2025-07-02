@@ -35,11 +35,11 @@ const ScheduleSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
 
             {/* Rome Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[-3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[-3deg]">
               <img
                 src={rome}
                 alt="Rome"
-                className="w-80 h-auto"
+                className="w-60 md:w-full md:max-w-[18rem] h-auto"
               />
             </div>
 
@@ -98,11 +98,11 @@ const ScheduleSection: React.FC = () => {
 
 
             {/* Party Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[3deg]">
               <img
                 src={party}
                 alt="Party"
-                className="w-80 h-auto"
+                className="w-60 md:w-full md:max-w-[18rem] h-auto"
               />
             </div>
           </div>

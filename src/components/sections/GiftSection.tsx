@@ -31,18 +31,18 @@ const GiftSection: React.FC = () => {
 
         {/* Column Layout */}
         <div className="font-playfair container mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             {/* First Polaroid Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[-3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[-3deg]">
               <img
                 src={sunset}
                 alt="Sunset"
-                className="w-60 h-auto"
+                className="w-60 md:w-full md:max-w-[18rem] h-auto"
               />
             </div>
 
             {/* Gift List Column */}
-            <div className="font-regular flex flex-col items-center text-center p-6 text-lg font-bold">
+            <div className="font-regular flex flex-col items-center text-center p-6 text-lg font-bold md:col-span-3">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 w-full max-w-md">
                 <ul className="space-y-6 text-left">
                   <li className="flex flex-col space-y-2 text-white">
@@ -96,11 +96,11 @@ const GiftSection: React.FC = () => {
             </div>
 
             {/* Second Polaroid Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-80 rotate-[3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[3deg]">
               <img
                 src={polaroid2}
                 alt="Gift Polaroid 2"
-                className="w-60 h-auto"
+                className="w-60 md:w-full md:max-w-[18rem] h-auto"
               />
             </div>
           </div>
