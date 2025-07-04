@@ -13,6 +13,7 @@ import { GuestGroup, ModalState } from '../types/interfaces';
 import '../style/animation.css';
 import background from '../assets/background1.jpeg';
 import LoadingOverlay from '../components/LoadingOverlay';
+import Footer from '../components/footer/Footer';
 
 const Home: React.FC = () => {
   const [authReady, setAuthReady] = useState(false);
@@ -160,6 +161,7 @@ const Home: React.FC = () => {
           onRSVPComplete={handleRSVPComplete}
         />
       </main>
+      <Footer />
     </>
   );
 };

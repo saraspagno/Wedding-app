@@ -132,7 +132,7 @@ const Admin: React.FC = () => {
   } = computeGuestStats(guestGroups);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 max-w-7xl mx-auto mt-20">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-gray-800 m-0">Admin Dashboard</h1>
         <button 

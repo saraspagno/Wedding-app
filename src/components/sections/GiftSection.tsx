@@ -25,7 +25,7 @@ const GiftSection: React.FC = () => {
         </div>
 
         {/* Title */}
-        <h2 className="font-cursive text-4xl text-white mb-12 relative z-10 pt-16 tracking-wide">
+        <h2 className="font-cursive text-4xl text-white mb-8 relative z-10 pt-16 tracking-wide">
           Gifting options
         </h2>
 
@@ -33,7 +33,7 @@ const GiftSection: React.FC = () => {
         <div className="font-playfair container mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             {/* First Polaroid Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[-3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-80 md:-mx-12 rotate-[-3deg]">
               <img
                 src={sunset}
                 alt="Sunset"
@@ -96,7 +96,7 @@ const GiftSection: React.FC = () => {
             </div>
 
             {/* Second Polaroid Image */}
-            <div className="flex flex-col items-center text-center p-6 md:-mt-48 lg:-mt-80 rotate-[3deg]">
+            <div className="flex flex-col items-center text-center p-6 md:-mt-80 md:-mx-12 rotate-[3deg]">
               <img
                 src={polaroid2}
                 alt="Gift Polaroid 2"
