@@ -14,6 +14,7 @@ import '../style/animation.css';
 import background from '../assets/background1.jpeg';
 import LoadingOverlay from '../components/LoadingOverlay';
 import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
 
 const Home: React.FC = () => {
   const [authReady, setAuthReady] = useState(false);
@@ -124,6 +125,7 @@ const Home: React.FC = () => {
       {(loading || !authReady || !animationReady) && <LoadingOverlay />}
 
       <main className="relative">
+      <Header />
         <section
           id="home"
           style={{

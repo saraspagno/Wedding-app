@@ -39,7 +39,7 @@ const EnvelopeAnimation: React.FC<EnvelopeAnimationProps> = ({ guestName, onRead
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
-      ctx.font = '40px Georgia';
+      ctx.font = '43px Georgia';
       ctx.fillStyle = '#3a2b1a';
       ctx.textAlign = 'center';
       ctx.fillText(`${guestName}`, canvas.width / 2, 400);
