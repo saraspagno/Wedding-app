@@ -1,6 +1,6 @@
 # Wedding Invitation App
 
-I built this website for my own wedding 💍💍 — a fully functional RSVP platform with personalized invitations, envelope animations, and guest management tools.
+I built this website for my own wedding 💍💍, a fully functional RSVP platform with personalized invitations, envelope animations, and guest management tools.
 [See it live here](https://wedding-app-jet.vercel.app/)
 
 ---
@@ -8,10 +8,10 @@ I built this website for my own wedding 💍💍 — a fully functional RSVP pla
 ## Features
 
 - **Personalized RSVP Links**  
-  Each guest receives a unique link to access their invitation, view a custom envelope-opening animation with their name, and respond directly.
+  Each guest receives a unique link to access their invitation, views a custom envelope-opening animation with their name, and responds directly.
 
 - **Elegant Invite Animation**  
-  A wedding-themed animation opens a virtual envelope, revealing the invitation in a smooth and festive way.
+  An animation opens a virtual envelope, revealing the invitation in a smooth and festive way.
 
 - **RSVP & Logistics**  
   Guests can mark whether they’re attending and additional info.
