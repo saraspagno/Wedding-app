@@ -138,6 +138,8 @@ function runCommonAnimation(
   startDelay: number = 1000
 ) {
   let time = startDelay;
+  const preload = new Image();
+  preload.src = lidOpen;
 
   setTimeout(() => {
     envelope!.style.transform = 'rotateY(180deg)';
@@ -145,21 +147,14 @@ function runCommonAnimation(
 
   time += 3000;
   setTimeout(() => {
-    lid!.style.transform = 'rotateX(-160deg)';
-    invitation!.style.opacity = '1';
+    lid.style.transform = 'rotateX(-160deg)';
+    setTimeout(() => {
+      lid.src = lidOpen;
+      lid!.style.zIndex = '2';
+    }, 470); 
   }, time);
 
-  time += 600;
-  setTimeout(() => {
-    lid!.src = lidOpen;
-  }, time);
-
-  time += 200;
-  setTimeout(() => {
-    lid!.style.zIndex = '2';
-  }, time);
-
-  time += 1200;
+  time += 1400;
   setTimeout(() => {
     invitation!.style.top = '-55%';
     invitation!.style.transform = 'rotateZ(-90deg) scale(1)';
