@@ -14,7 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  if (!user || user.isAnonymous) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 

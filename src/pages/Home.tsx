@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { db } from '../types/firebase';
-import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
 import Modal from '../components/Modal';
@@ -17,7 +16,6 @@ import Footer from '../components/footer/Footer';
 import Header from '../components/header/Header';
 
 const Home: React.FC = () => {
-  const [authReady, setAuthReady] = useState(false);
   const [searchParams] = useSearchParams();
   const [guestGroup, setGuestGroup] = useState<GuestGroup | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,28 +24,6 @@ const Home: React.FC = () => {
   const [animationReady, setAnimationReady] = useState(false);
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setAuthReady(true);
-      } else {
-        signInAnonymously(auth)
-          .then(() => {
-            setAuthReady(true);
-          })
-          .catch((error) => {
-            console.error('Anonymous sign-in failed:', error);
-            setError(true);
-            setModalState(ModalState.ERROR);
-          });
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!authReady) return;
     const fetchGuestGroup = async () => {
       const rsvpCode = searchParams.get('code');
       if (!rsvpCode) {
@@ -82,7 +58,7 @@ const Home: React.FC = () => {
     };
 
     fetchGuestGroup();
-  }, [authReady, searchParams]);
+  }, [searchParams]);
 
   const handleRSVPComplete = (updatedGroup: GuestGroup) => {
     setGuestGroup(updatedGroup);
@@ -124,7 +100,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Fullscreen Loading Overlay */}
-      {(loading || !authReady || !animationReady) && <LoadingOverlay />}
+      {(loading || !animationReady) && <LoadingOverlay />}
 
       <main className="relative">
       <Header />
@@ -139,7 +115,7 @@ const Home: React.FC = () => {
           <EnvelopeAnimation 
             guestName={guestGroup?.groupInvite ?? ''} 
             onReady={() => setAnimationReady(true)}
-            loadingComplete={!loading && authReady && animationReady}
+            loadingComplete={!loading && animationReady}
           />
 
           <button
