@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import enFlag from '../assets/language/en.png';
 import itFlag from '../assets/language/it.png';
+import { HiOutlineChevronDown } from 'react-icons/hi';
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
@@ -48,17 +49,9 @@ const LanguageSwitcher: React.FC = () => {
           alt={`${currentLanguage.code} flag`} 
           className="w-6 h-4 object-cover"
         />
-        <svg
-          className={`h-4 w-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path d="M19 9l-7 7-7-7" />
-        </svg>
+        <HiOutlineChevronDown
+          className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
       
       {isOpen && (

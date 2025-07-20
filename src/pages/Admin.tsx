@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../types/firebase';
 import { signOut } from 'firebase/auth';
-import { collection, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, updateDoc, doc, setDoc } from 'firebase/firestore';
 import GuestTable from '../components/GuestTable';
 import AddGuestForm from '../components/AddGuestForm';
 import { Guest, GuestGroup } from '../types/interfaces';
@@ -100,10 +100,12 @@ const Admin: React.FC = () => {
 
       // Generate a unique RSVP code for the group
       const rsvpCode = Math.random().toString(36).substring(2, 10);      
-      await updateDoc(doc(db, 'guestGroups', groupId), {
-        rsvpCode
+      await updateDoc(doc(db, 'guestGroups', groupId), { rsvpCode });
+      await setDoc(doc(db, 'rsvpCodes', rsvpCode), {
+        groupId,
       });
       
+    
       setGuestGroups(guestGroups.map(group => 
         group.id === groupId 
           ? { ...group, rsvpCode }

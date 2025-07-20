@@ -5,7 +5,7 @@ import cheers from '../../assets/schedule/cheers.png';
 import huppa from '../../assets/schedule/huppa.png';
 import rome from '../../assets/us/rome_polaroid.png';
 import party from '../../assets/us/party_polaroid.png';
-import { ClockIcon, LocationIcon } from '../icons';
+import { FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 
 const ScheduleSection: React.FC = () => {
   return (
@@ -57,11 +57,11 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-gray-50 font-semibold space-y-1 text-lg">
                 <li>From and to <a href="https://maps.app.goo.gl/kdoVxGmJQtbLiUe27" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300">Hilton, Tel-Aviv</a></li>
                 <li className="flex items-center justify-center gap-1">
-                  <ClockIcon className="text-gray-300" size="sm" />
+                  <FaClock className="text-gray-300 w-4 h-4" />
                   <strong>Departs:</strong> <span className="text-xl font-bold">16:30</span>
                 </li>
                 <li className="flex items-center justify-center gap-1">
-                  <ClockIcon className="text-gray-300" size="sm" />
+                  <FaClock className="text-gray-300 w-4 h-4" />
                   <strong>Returns:</strong> <span className="text-xl font-bold">00:30, 01:30</span>
                 </li>
               </ul>
@@ -79,11 +79,11 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-gray-50 font-semibold space-y-1 text-lg">
                 <li>Venue <a href="https://maps.app.goo.gl/iiBAHSEuLnpYvqQQA" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-400 text-gray-300">Gioia Mia</a></li>
                 <li className="flex items-center justify-center gap-1">
-                  <LocationIcon className="text-gray-300" size="sm" />
+                  <FaMapMarkerAlt className="text-gray-300 w-4 h-4" />
                   Nahshonim
                 </li>
                 <li className="flex items-center justify-center gap-1">
-                  <ClockIcon className="text-gray-300" size="sm" />
+                  <FaClock className="text-gray-300 w-4 h-4" />
                   <strong>Starts:</strong> <span className="text-xl font-bold">18:00</span>
                 </li>
               </ul>
@@ -101,7 +101,7 @@ const ScheduleSection: React.FC = () => {
               <ul className="text-gray-50 font-semibold space-y-1 text-lg">
                 <li>Under the chuppà</li>
                 <li className="flex items-center justify-center gap-1">
-                  <ClockIcon className="text-gray-300" size="sm" />
+                  <FaClock className="text-gray-300 w-4 h-4" />
                   <strong>Starts:</strong> <span className="text-xl font-bold">19:00</span>
                 </li>
               </ul>

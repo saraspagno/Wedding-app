@@ -1,7 +1,7 @@
 import React from 'react';
 import flowers from '../../assets/shabbat/background3.png';
 import background from '../../assets/background1.jpeg';
-import { LocationIcon, ClockIcon } from '../icons';
+import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const ShabbatSection: React.FC = () => {
   return (
@@ -31,12 +31,12 @@ const ShabbatSection: React.FC = () => {
           <p className="font-bold">Please join us for a</p>
           <p className="font-bold">SATURDAY KIDDUSH</p>
           <p className="font-bold flex items-center justify-center gap-1">
-            <LocationIcon className="text-amber-950" size="sm" />
+            <FaMapMarkerAlt className="text-amber-950 w-4 h-4" />
             Synagogue <a href="https://maps.app.goo.gl/CGJb5MVTV9Fk7FT17" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline text-amber-950">Frishman 14, TLV</a>
           </p>
           <div className="mt-8 space-y-2">
             <p className="font-semibold flex items-center justify-center gap-1">
-              <ClockIcon className="text-amber-950" size="sm" />
+              <FaClock className="text-amber-950 w-4 h-4" />
               28.05.2026 - 9:30
             </p>
           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../types/firebase';
 import { Guest, GuestGroup, BusTime } from '../types/interfaces';
-import { BusIcon } from './icons';
+import { FaBus } from 'react-icons/fa';
 
 interface RSVPFormProps {
   guestGroup: GuestGroup;
@@ -37,7 +37,8 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
       }));
 
       await updateDoc(doc(db, 'guestGroups', guestGroup.id), {
-        guests: updatedGuests
+        guests: updatedGuests,
+        rsvpCode: guestGroup.rsvpCode 
       });
 
       const updatedGroup = {
@@ -116,7 +117,7 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ guestGroup, onRSVPComplete, onClose
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
                     <span className="text-sm text-gray-600 font-medium">Shuttle</span>
-                    <BusIcon className="text-gray-600" size="sm" />
+                    <FaBus className="text-gray-600 w-4 h-4" />
                   </div>
                   <div className="flex gap-1">
                     <button

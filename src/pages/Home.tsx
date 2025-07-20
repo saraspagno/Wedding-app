@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { db } from '../types/firebase';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import EnvelopeAnimation from '../components/EnvelopeAnimation';
 import Modal from '../components/Modal';
 import DetailsSection from '../components/sections/DetailsSection';
@@ -50,25 +50,27 @@ const Home: React.FC = () => {
     if (!authReady) return;
     const fetchGuestGroup = async () => {
       const rsvpCode = searchParams.get('code');
-      if (!rsvpCode) {        
+      if (!rsvpCode) {
         setLoading(false);
         return;
       }
-
+  
       try {
-        const q = query(collection(db, 'guestGroups'), where('rsvpCode', '==', rsvpCode));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-          console.error('Invalid RSVP code:', rsvpCode);
-          setError(true);
-          setModalState(ModalState.ERROR);
-          setLoading(false);
-          return;
+        const codeRef = doc(db, 'rsvpCodes', rsvpCode);
+        const codeSnap = await getDoc(codeRef);
+        if (!codeSnap.exists()) {
+          throw new Error('Invalid RSVP code');
         }
+        const groupId = codeSnap.data().groupId;
+        console.log(groupId)
 
-        const docSnap = querySnapshot.docs[0];
-        const groupData = { id: docSnap.id, ...docSnap.data() } as GuestGroup;
+        const groupRef = doc(db, 'guestGroups', groupId);
+        const groupSnap = await getDoc(groupRef);
+        if (!groupSnap.exists() || groupSnap.data().rsvpCode !== rsvpCode) {
+          throw new Error('RSVP code mismatch');
+        }
+        const groupData = { id: groupSnap.id, ...groupSnap.data() } as GuestGroup;
+        console.log(groupData)
         setGuestGroup(groupData);
       } catch (err) {
         console.error('Error fetching guest group information:', err);

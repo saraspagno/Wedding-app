@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 import { GuestGroup, ModalState } from '../types/interfaces';
-import { BusIcon, HeartCrackIcon, PartyIcon } from './icons';
+import { FaBus, FaHeartBroken } from 'react-icons/fa';
+import { GiPartyPopper } from 'react-icons/gi';
 import confetti from 'canvas-confetti';
 
 interface ModalProps {
@@ -40,7 +41,7 @@ const GuestList: React.FC<{ guestGroup: GuestGroup }> = ({ guestGroup }) => (
                         </span>
                         {guest.coming && (
                             <div className="flex items-center gap-1 text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-full border border-gray-200 shadow-sm">
-                                <BusIcon className="text-gray-600" size="sm" />
+                                <FaBus className="text-gray-600 w-4 h-4" />
                                 {guest.busTime === 'none' ? 'No' : guest.busTime}
                             </div>
                         )}
@@ -100,7 +101,7 @@ const Modal: React.FC<ModalProps> = ({
                         <div className="text-center mb-8">
                             <h2 className="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
                                 Thank you
-                                <PartyIcon className="text-gray-600" size="lg" />
+                                <GiPartyPopper className="text-gray-600 w-6 h-6" />
                             </h2>
                             <p className="text-lg text-gray-600 font-medium">
                                 We look forward to celebrating with you!
@@ -121,7 +122,7 @@ const Modal: React.FC<ModalProps> = ({
                         <div className="text-center mb-8">
                             <h2 className="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
                                 We will miss you
-                                <HeartCrackIcon className="text-gray-600" size="lg" />
+                                <FaHeartBroken className="text-gray-600 w-6 h-6" />
                             </h2>
                             <p className="text-lg text-gray-600 font-medium mb-3">
                                 We are sorry you can't make it!

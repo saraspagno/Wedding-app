@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import LanguageSwitcher from '../LanguageSwitcher';
 import logo from '../../assets/logo.png';
-import { menuItems } from '../../declarations/menuItems';
+import { menuItems } from '../../types/menuItems';
+import { HiOutlineMenu } from 'react-icons/hi';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,17 +57,7 @@ const Header: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="flex items-center space-x-2 text-gray-700 hover:text-gray-900"
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
+              <HiOutlineMenu className="h-6 w-6 text-gray-400" />
               <span>Menu</span>
             </button>
           </div>
